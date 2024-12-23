@@ -155,8 +155,7 @@ publishMods {
     modLoaders.add("forge")
     curseforge {
         accessToken = file("D:\\curseforge-key.txt").text
-        projectId = "1150640"
-        clientRequired = true
+        projectId = "${project_id}"
         minecraftVersions.add("1.20.1")
     }
 }

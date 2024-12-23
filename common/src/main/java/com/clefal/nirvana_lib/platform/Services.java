@@ -1,6 +1,6 @@
 package com.clefal.nirvana_lib.platform;
 
-import com.clefal.nirvana_lib.NirvanaConstants;
+import com.clefal.nirvana_lib.NirvanaLibConstants;
 import com.clefal.nirvana_lib.platform.services.IPlatformHelper;
 
 import java.util.ServiceLoader;
@@ -24,7 +24,7 @@ public class Services {
         final T loadedService = ServiceLoader.load(clazz)
                 .findFirst()
                 .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-        NirvanaConstants.LOG.debug("Loaded {} for service {}", loadedService, clazz);
+        NirvanaLibConstants.LOGGER.debug("Loaded {} for service {}", loadedService, clazz);
         return loadedService;
     }
 }

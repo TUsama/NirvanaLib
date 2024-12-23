@@ -6,5 +6,5 @@ import org.slf4j.LoggerFactory;
 public class NirvanaLibConstants {
     public static final String MOD_NAME = "NirvanaLib";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
-    public static String MOD_ID = "nirvana_lib";
+    public static final String MOD_ID = "nirvana_lib";
 }
