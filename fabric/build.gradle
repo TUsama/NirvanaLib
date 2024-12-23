@@ -1,0 +1,114 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'fabric-loom'
+    id "me.modmuss50.mod-publish-plugin"
+    id 'com.github.johnrengelman.shadow'
+
+}
+base {
+    archivesName = "${mod_name}-fabric-${minecraft_version}"
+}
+configurations {
+    shade
+    implementation.extendsFrom shade
+}
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings loom.layered() {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip")
+    }
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    implementation project(":common")
+
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
+
+
+    shade "io.vavr:vavr:0.10.4"
+    shade ("net.neoforged:bus:${neoforge_eventbus_version}") {
+        exclude group: "org.ow2.asm"
+        exclude group: "net.jodah"
+        exclude group: "org.apache.logging.log4j"
+        exclude group: "cpw.mods", module: "modlauncher"
+    }
+}
+
+loom {
+    if (project(":common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
+        accessWidenerPath.set(project(":common").file("src/main/resources/${mod_id}.accesswidener"))
+    }
+    mixin {
+        defaultRefmapName.set("${mod_id}.refmap.json")
+    }
+    runs {
+        client {
+            client()
+            setConfigName("Fabric Client")
+            ideConfigGenerated(true)
+            runDir("run")
+        }
+        server {
+            server()
+            setConfigName("Fabric Server")
+            ideConfigGenerated(true)
+            runDir("run")
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    source(project(":common").sourceSets.main.allSource)
+}
+tasks.withType(Javadoc).configureEach {
+    source(project(":common").sourceSets.main.allJava)
+}
+tasks.named("sourcesJar", Jar) {
+    from(project(":common").sourceSets.main.allSource)
+}
+
+
+processResources {
+    from project(":common").sourceSets.main.resources
+}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+    archiveClassifier = "shadow"
+    relocate 'net.neoforged.bus', "${project.group}.relocated.net.neoforged.bus"
+    relocate 'io.vavr', "${project.group}.relocated.io.vavr"
+}
+
+remapJar {
+    dependsOn(shadowJar)
+    mustRunAfter(shadowJar)
+    inputFile = file(tasks.shadowJar.archiveFile)
+}
+
+publishMods {
+    file = tasks.remapJar.archiveFile
+    displayName = file.map { it.asFile.name }
+    changelog = file("..\\changelog.md").text.split('\n').collect { string -> {
+        if (!string.isBlank()) {
+            string + "</br>"
+        } else {
+            string
+        }
+    }}.join('\n')
+    type = BETA
+    modLoaders.add("fabric")
+    curseforge {
+        accessToken = file("D:\\curseforge-key.txt").text
+        projectId = "1150640"
+        clientRequired = true
+        minecraftVersions.add("1.20.1")
+    }
+}
+
+
