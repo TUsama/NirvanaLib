@@ -9,8 +9,8 @@
     ],
     "contact": {
         "homepage": "https://www.curseforge.com/minecraft/mc-mods/nirvana-library",
-        "issues": "https://github.com/TUsama/NirvanaLib",
-        "sources": "https://github.com/TUsama/Loot-Beams-Refork"
+        "issues": "https://github.com/TUsama/NirvanaLib/issues",
+        "sources": "https://github.com/TUsama/NirvanaLib"
     },
     "license": "${license}",
     "icon": "icon.png",
