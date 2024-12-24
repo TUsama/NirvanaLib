@@ -1,11 +1,8 @@
-import me.modmuss50.mpp.ReleaseType
-
 plugins {
-    id 'java'
-    id 'idea'
+    id 'multiloader-loader'
     id 'fabric-loom'
-    id "me.modmuss50.mod-publish-plugin"
-    id 'com.github.johnrengelman.shadow'
+    id "me.modmuss50.mod-publish-plugin" version "0.8.1"
+    id 'com.gradleup.shadow' version '9.0.0-beta4'
 
 }
 base {
@@ -17,14 +14,13 @@ configurations {
 }
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings loom.layered() {
+    mappings loom.layered {
         officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip")
+        parchment("org.parchmentmc.data:parchment-${parchment_minecraft}:${parchment_version}@zip")
     }
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_version}"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation project(":common")
 
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
@@ -42,9 +38,12 @@ dependencies {
     }
 }
 
+
+
 loom {
-    if (project(":common").file("src/main/resources/${mod_id}.accesswidener").exists()) {
-        accessWidenerPath.set(project(":common").file("src/main/resources/${mod_id}.accesswidener"))
+    def aw = project(':common').file("src/main/resources/${mod_id}.accesswidener")
+    if (aw.exists()) {
+        accessWidenerPath.set(aw)
     }
     mixin {
         defaultRefmapName.set("${mod_id}.refmap.json")
@@ -52,31 +51,22 @@ loom {
     runs {
         client {
             client()
-            setConfigName("Fabric Client")
+            setConfigName('Fabric Client')
             ideConfigGenerated(true)
-            runDir("run")
+            runDir('runs/client')
         }
         server {
             server()
-            setConfigName("Fabric Server")
+            setConfigName('Fabric Server')
             ideConfigGenerated(true)
-            runDir("run")
+            runDir('runs/server')
         }
     }
 }
 
-tasks.withType(JavaCompile).configureEach {
-    source(project(":common").sourceSets.main.allSource)
-}
-tasks.withType(Javadoc).configureEach {
-    source(project(":common").sourceSets.main.allJava)
-}
-tasks.named("sourcesJar", Jar) {
-    from(project(":common").sourceSets.main.allSource)
-}
-
 
 processResources {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     from project(":common").sourceSets.main.resources
 }
 
@@ -85,6 +75,7 @@ shadowJar {
     archiveClassifier = "shadow"
     relocate 'net.neoforged.bus', "${project.group}.relocated.net.neoforged.bus"
     relocate 'io.vavr', "${project.group}.relocated.io.vavr"
+
 }
 
 remapJar {
@@ -103,12 +94,16 @@ publishMods {
             string
         }
     }}.join('\n')
-    type = ReleaseType.STABLE
+    type = STABLE
     modLoaders.add("fabric")
     curseforge {
         accessToken = file("D:\\curseforge-key.txt").text
         projectId = "${project_id}"
-        minecraftVersions.add("1.20.1")
+        clientRequired = true
+        minecraftVersionRange {
+            start = "1.21"
+            end = "${minecraft_version}"
+        }
     }
 }
 
