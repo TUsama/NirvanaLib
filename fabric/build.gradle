@@ -75,7 +75,6 @@ shadowJar {
     archiveClassifier = "shadow"
     relocate 'net.neoforged.bus', "${project.group}.relocated.net.neoforged.bus"
     relocate 'io.vavr', "${project.group}.relocated.io.vavr"
-
 }
 
 remapJar {
@@ -99,7 +98,6 @@ publishMods {
     curseforge {
         accessToken = file("D:\\curseforge-key.txt").text
         projectId = "${project_id}"
-        clientRequired = true
         minecraftVersionRange {
             start = "1.21"
             end = "${minecraft_version}"

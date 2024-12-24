@@ -12,8 +12,7 @@ def namePattern = "${mod_name}-neoforge-${minecraft_version}"
 
 configurations {
     shade
-    libraries
-    implementation.extendsFrom(libraries, shade)
+    implementation.extendsFrom(shade)
 }
 
 base {
@@ -67,10 +66,10 @@ dependencies {
 
 
 
-    libraries "io.vavr:vavr:0.10.4"
+    shade "io.vavr:vavr:0.10.4"
     additionalRuntimeClasspath "io.vavr:vavr:0.10.4"
 
-    implementation ("net.neoforged:bus:${neoforge_eventbus_version}") {
+    shade ("net.neoforged:bus:${neoforge_eventbus_version}") {
         exclude group: "org.ow2.asm"
         exclude group: "net.jodah"
         exclude group: "org.apache.logging.log4j"
@@ -91,10 +90,9 @@ shadowJar {
 
 tasks.named('shadowJar', ShadowJar) {
     archiveClassifier = ''
-    configurations = [project.configurations.libraries]
+    configurations = [project.configurations.shade]
     relocate 'net.neoforged.bus', "${project.group}.relocated.net.neoforged.bus"
     relocate 'io.vavr', "${project.group}.relocated.io.vavr"
-    minimize()
 }
 
 assemble.dependsOn shadowJar
