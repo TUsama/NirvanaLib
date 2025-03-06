@@ -1,5 +1,14 @@
 package com.clefal.nirvana_lib.platform.services;
 
+import com.clefal.nirvana_lib.network.C2SModPacket;
+import com.clefal.nirvana_lib.network.S2CModPacket;
+import com.clefal.nirvana_lib.network.SafeMSGInvoker;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+
+import java.util.Collection;
+import java.util.function.Function;
+
 public interface IPlatformHelper {
 
     /**
@@ -33,4 +42,16 @@ public interface IPlatformHelper {
 
         return isDevelopmentEnvironment() ? "development" : "production";
     }
+
+    void sendToClient(S2CModPacket msg, ServerPlayer player);
+
+    default void sendToClients(S2CModPacket msg, Iterable<ServerPlayer> playerList) {
+        playerList.forEach(player -> sendToClient(msg,player));
+    }
+    void sendToServer(C2SModPacket msg);
+
+
+    <MSG extends S2CModPacket> void registerClientMessage(Class<MSG> packetClass, SafeMSGInvoker<MSG> reader);
+
+    <MSG extends C2SModPacket> void registerServerMessage(Class<MSG> packetClass, SafeMSGInvoker<MSG> reader);
 }
