@@ -108,6 +108,9 @@ dependencies {
         exclude group: "org.apache.logging.log4j"
         exclude group: "cpw.mods", module: "modlauncher"
     }
+
+    implementation(fg.deobf("me.fzzyhmstrs:fzzy_config:${fzzy_config_version}+forge"))
+    implementation("thedarkcolour:kotlinforforge:4.11.0")
 }
 
 tasks.withType(JavaCompile).configureEach {

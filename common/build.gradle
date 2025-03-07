@@ -55,5 +55,7 @@ dependencies {
         exclude group: "org.apache.logging.log4j"
         exclude group: "cpw.mods", module: "modlauncher"
     }
+
+    compileOnly "curse.maven:fzzy-config-1005914:6144527"
 }
 

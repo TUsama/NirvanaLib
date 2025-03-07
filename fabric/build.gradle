@@ -40,6 +40,8 @@ dependencies {
         exclude group: "org.apache.logging.log4j"
         exclude group: "cpw.mods", module: "modlauncher"
     }
+
+    modImplementation "me.fzzyhmstrs:fzzy_config:${fzzy_config_version}"
 }
 
 loom {
