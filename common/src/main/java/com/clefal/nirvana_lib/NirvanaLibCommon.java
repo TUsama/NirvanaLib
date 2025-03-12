@@ -1,7 +1,7 @@
 package com.clefal.nirvana_lib;
 
 import com.clefal.nirvana_lib.network.packets.C2SSendSyncingConfigPacket;
-import com.clefal.nirvana_lib.platform.Services;
+import com.clefal.nirvana_lib.utils.NetworkUtil;
 
 public class NirvanaLibCommon {
 
@@ -14,6 +14,6 @@ public class NirvanaLibCommon {
     }
 
     private static void registerServerPackets() {
-        Services.PLATFORM.registerServerMessage(C2SSendSyncingConfigPacket.class, () -> (C2SSendSyncingConfigPacket::new));
+        NetworkUtil.registerServerMessage(C2SSendSyncingConfigPacket.class, () -> (C2SSendSyncingConfigPacket::new));
     }
 }
