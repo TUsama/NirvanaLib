@@ -1,4 +1,4 @@
-package com.clefal.nirvana_lib.client.animation;
+package com.clefal.nirvana_lib.client.render.animation;
 
 import lombok.Getter;
 
