@@ -27,7 +27,7 @@ public class RenderTypeCreator extends RenderType {
         super($$0, $$1, $$2, $$3, $$4, $$5, $$6, $$7);
     }
 
-    public static RenderType create(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean $$4, boolean $$5, RenderType.CompositeState state) {
+    public static RenderType. CompositeRenderType create(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean $$4, boolean $$5, RenderType.CompositeState state) {
         return AccessorRenderType.create(name, format, mode, bufferSize, $$4, $$5, state);
     }
 
