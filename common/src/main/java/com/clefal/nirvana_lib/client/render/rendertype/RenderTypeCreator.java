@@ -15,7 +15,7 @@ import java.util.function.Function;
 
 public class RenderTypeCreator extends RenderType {
 
-    public static final Function<ResourceLocation, RenderType> gui = Util.memoize(resourceLocation -> create("nl_normal_gui", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 1024, false, false,
+    public static final Function<ResourceLocation, RenderType> gui = Util.memoize(resourceLocation -> createRenderType("nl_normal_gui", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 1024, false, false,
             CompositeState.builder()
                     .setShaderState(new ShaderStateShard(GameRenderer::getPositionTexColorShader))
                     .setTextureState(new TextureStateShard(resourceLocation, false, false))
@@ -27,7 +27,7 @@ public class RenderTypeCreator extends RenderType {
         super($$0, $$1, $$2, $$3, $$4, $$5, $$6, $$7);
     }
 
-    public static RenderType.CompositeRenderType create(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean $$4, boolean $$5, RenderType.CompositeState state) {
+    public static RenderType.CompositeRenderType createRenderType(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean $$4, boolean $$5, RenderType.CompositeState state) {
         return AccessorRenderType.create(name, format, mode, bufferSize, $$4, $$5, state);
     }
 

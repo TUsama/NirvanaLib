@@ -6,8 +6,11 @@ import com.clefal.nirvana_lib.network.S2CModPacket;
 import com.clefal.nirvana_lib.network.SafeMSGInvoker;
 import com.clefal.nirvana_lib.platform.services.IPlatformHelper;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.util.thread.SidedThreadGroups;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.simple.SimpleChannel;
 
@@ -29,6 +32,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public boolean isDevelopmentEnvironment() {
 
         return !FMLLoader.isProduction();
+    }
+
+    @Override
+    public boolean isClient() {
+        return FMLEnvironment.dist == Dist.CLIENT;
     }
 
     @Override

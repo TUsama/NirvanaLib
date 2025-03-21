@@ -43,6 +43,8 @@ public interface IPlatformHelper {
         return isDevelopmentEnvironment() ? "development" : "production";
     }
 
+    boolean isClient();
+
     void sendToClient(S2CModPacket msg, ServerPlayer player);
 
     default void sendToClients(S2CModPacket msg, Iterable<ServerPlayer> playerList) {
