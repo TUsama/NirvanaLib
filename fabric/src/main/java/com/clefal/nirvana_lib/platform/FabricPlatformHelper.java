@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Locale;
+import java.util.function.Function;
 
 public class FabricPlatformHelper implements IPlatformHelper {
 
@@ -53,13 +54,13 @@ public class FabricPlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public <MSG extends S2CModPacket> void registerClientMessage(Class<MSG> packetClass, SafeMSGInvoker<MSG> reader) {
-        ClientPlayNetworking.registerGlobalReceiver(packet(packetClass), new ClientHandler<>(reader.get()));
+    public <MSG extends S2CModPacket> void registerClientMessage(Class<MSG> packetClass, Function<FriendlyByteBuf, MSG> reader) {
+        ClientPlayNetworking.registerGlobalReceiver(packet(packetClass), new ClientHandler<>(reader));
     }
 
     @Override
-    public <MSG extends C2SModPacket> void registerServerMessage(Class<MSG> packetClass, SafeMSGInvoker<MSG> reader) {
-        ServerPlayNetworking.registerGlobalReceiver(packet(packetClass), new ServerHandler<>(reader.get()));
+    public <MSG extends C2SModPacket> void registerServerMessage(Class<MSG> packetClass, Function<FriendlyByteBuf, MSG> reader) {
+        ServerPlayNetworking.registerGlobalReceiver(packet(packetClass), new ServerHandler<>(reader));
 
     }
 

@@ -3,18 +3,23 @@ package com.clefal.nirvana_lib.platform;
 import com.clefal.nirvana_lib.network.C2SModPacket;
 import com.clefal.nirvana_lib.network.PacketHandlerForge;
 import com.clefal.nirvana_lib.network.S2CModPacket;
-import com.clefal.nirvana_lib.network.SafeMSGInvoker;
 import com.clefal.nirvana_lib.platform.services.IPlatformHelper;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.fml.util.thread.SidedThreadGroups;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.simple.SimpleChannel;
 
+import java.util.function.Function;
+
 public class ForgePlatformHelper implements IPlatformHelper {
+
+    static int i = 7000;
+    static int j = 5040;
 
     @Override
     public String getPlatformName() {
@@ -41,27 +46,28 @@ public class ForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public void sendToClient(S2CModPacket msg, ServerPlayer player) {
-        getChannel().sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+        Packet<?> vanillaPacket = getChannel().toVanillaPacket(msg, NetworkDirection.PLAY_TO_CLIENT);
+        System.out.println("get vanilla packet!");
+        player.connection.send(vanillaPacket);
+
     }
 
     @Override
     public void sendToServer(C2SModPacket msg) {
         getChannel().sendToServer(msg);
     }
-    static int i = 1024000;
-    @Override
-    public <MSG extends S2CModPacket> void registerClientMessage(Class<MSG> packetClass, SafeMSGInvoker<MSG> reader) {
-        getChannel().registerMessage(i++, packetClass, MSG::write, reader.get(), PacketHandlerForge.wrapS2C());
-    }
-
-    static int j = 5000;
 
     @Override
-    public <MSG extends C2SModPacket> void registerServerMessage(Class<MSG> packetClass, SafeMSGInvoker<MSG> reader) {
-        getChannel().registerMessage(j++, packetClass, MSG::write, reader.get(), PacketHandlerForge.wrapC2S());
+    public <MSG extends S2CModPacket> void registerClientMessage(Class<MSG> packetClass, Function<FriendlyByteBuf, MSG> reader) {
+        getChannel().registerMessage(i++, packetClass, MSG::write, reader, PacketHandlerForge.wrapS2C());
     }
 
-    protected SimpleChannel getChannel(){
+    @Override
+    public <MSG extends C2SModPacket> void registerServerMessage(Class<MSG> packetClass, Function<FriendlyByteBuf, MSG> reader) {
+        getChannel().registerMessage(j++, packetClass, MSG::write, reader, PacketHandlerForge.wrapC2S());
+    }
+
+    protected SimpleChannel getChannel() {
         return PacketHandlerForge.INSTANCE;
     }
 }

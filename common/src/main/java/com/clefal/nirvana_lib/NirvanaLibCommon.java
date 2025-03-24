@@ -18,11 +18,6 @@ public class NirvanaLibCommon {
     }
 
     private static void registerServerPackets() {
-        NetworkUtil.registerServerMessage(C2SSendSyncingConfigPacket.class, new SafeMSGInvoker<C2SSendSyncingConfigPacket>() {
-            @Override
-            public Function<FriendlyByteBuf, C2SSendSyncingConfigPacket> get() {
-                return buf -> new C2SSendSyncingConfigPacket(buf);
-            }
-        });
+        NetworkUtil.registerServerMessage(C2SSendSyncingConfigPacket.class, C2SSendSyncingConfigPacket::new);
     }
 }
