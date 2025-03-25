@@ -1,11 +1,8 @@
 package com.clefal.nirvana_lib;
 
-import com.clefal.nirvana_lib.network.SafeMSGInvoker;
 import com.clefal.nirvana_lib.network.packets.C2SSendSyncingConfigPacket;
-import com.clefal.nirvana_lib.utils.NetworkUtil;
-import net.minecraft.network.FriendlyByteBuf;
-
-import java.util.function.Function;
+import com.clefal.nirvana_lib.utils.NetworkUtils;
+import net.minecraft.resources.ResourceLocation;
 
 public class NirvanaLibCommon {
 
@@ -18,6 +15,10 @@ public class NirvanaLibCommon {
     }
 
     private static void registerServerPackets() {
-        NetworkUtil.registerServerMessage(C2SSendSyncingConfigPacket.class, C2SSendSyncingConfigPacket::new);
+        NetworkUtils.registerServerMessage(C2SSendSyncingConfigPacket.class, C2SSendSyncingConfigPacket::new);
+    }
+
+    public static ResourceLocation id(String path) {
+        return new ResourceLocation(NirvanaLibConstants.MOD_ID, path);
     }
 }

@@ -1,7 +1,6 @@
 package com.clefal.nirvana_lib.network;
 
-import com.clefal.nirvana_lib.NirvanaLib;
-import com.clefal.nirvana_lib.NirvanaLibConstants;
+import com.clefal.nirvana_lib.NirvanaLibCommon;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
@@ -11,12 +10,12 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 public class PacketHandlerForge {
-    public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(NirvanaLib.id("common"), () -> "1.0", s -> true, s -> true);
+    public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(NirvanaLibCommon.id("common"), () -> "1.0", s -> true, s -> true);
     ;
 
     public static <MSG extends S2CModPacket> BiConsumer<MSG, Supplier<NetworkEvent.Context>> wrapS2C() {
         return ((msg, contextSupplier) -> {
-            System.out.println("handle on client!");
+            
             contextSupplier.get().enqueueWork(msg::handleClient);
             contextSupplier.get().setPacketHandled(true);
         });

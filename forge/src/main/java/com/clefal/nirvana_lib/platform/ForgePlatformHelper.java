@@ -47,7 +47,7 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public void sendToClient(S2CModPacket msg, ServerPlayer player) {
         Packet<?> vanillaPacket = getChannel().toVanillaPacket(msg, NetworkDirection.PLAY_TO_CLIENT);
-        System.out.println("get vanilla packet!");
+        
         player.connection.send(vanillaPacket);
 
     }

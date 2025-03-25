@@ -2,7 +2,6 @@ package com.clefal.nirvana_lib.utils;
 
 import com.clefal.nirvana_lib.network.C2SModPacket;
 import com.clefal.nirvana_lib.network.S2CModPacket;
-import com.clefal.nirvana_lib.network.SafeMSGInvoker;
 import com.clefal.nirvana_lib.platform.Services;
 import lombok.experimental.UtilityClass;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,10 +10,10 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.function.Function;
 
 @UtilityClass
-public class NetworkUtil {
+public class NetworkUtils {
 
     public void sendToClient(S2CModPacket msg, ServerPlayer player){
-        System.out.println("send in NetworkUtil");
+        
         Services.PLATFORM.sendToClient(msg, player);
     }
 
