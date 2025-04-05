@@ -4,8 +4,6 @@ import net.minecraft.network.FriendlyByteBuf;
 
 public class BooleanValue extends ConfigValue<Boolean>{
 
-    public static final byte token =  0;
-
     public BooleanValue(Boolean value) {
         super(value);
     }
@@ -18,6 +16,11 @@ public class BooleanValue extends ConfigValue<Boolean>{
 
     @Override
     public byte getToken() {
-        return token;
+        return ConfigTokens.BOOLEAN;
+    }
+
+    @Override
+    public Boolean getDefault() {
+        return false;
     }
 }

@@ -28,6 +28,7 @@ public class C2SSendSyncingConfigPacket implements C2SModPacket {
             switch (token) {
                 case 0 -> value = new BooleanValue(buf.readBoolean());
                 case 1 -> value = new IntegerValue(((Byte) buf.readByte()).intValue());
+                case 2 -> value = new StringListValue(buf.readCollection(ArrayList::new, FriendlyByteBuf::readUtf));
             }
             if (value == null) throw new RuntimeException("invalidated token: " + token);
             map.put(key, value);
@@ -37,7 +38,7 @@ public class C2SSendSyncingConfigPacket implements C2SModPacket {
 
     @Override
     public void handleServer(ServerPlayer player) {
-        PersonalConfigData data = SyncingPersonalConfig.INSTANCE.getData(this.player);
+        PersonalConfigData data = SyncingPersonalConfig.INSTANCE.getData(this.player, player.getServer().overworld());
         if (data != null){
             for (Map.Entry<String, ConfigValue<?>> e : map.entrySet()) {
                 data.configMap.merge(e.getKey(), e.getValue(), (old, newOne) -> newOne);

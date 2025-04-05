@@ -13,4 +13,5 @@ public abstract class ConfigValue<T> {
 
     public abstract void write(FriendlyByteBuf buf);
     public abstract byte getToken();
+    public abstract T getDefault();
 }

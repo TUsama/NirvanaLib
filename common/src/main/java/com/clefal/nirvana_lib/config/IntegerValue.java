@@ -4,8 +4,6 @@ import net.minecraft.network.FriendlyByteBuf;
 
 public class IntegerValue extends ConfigValue<Integer>{
 
-    public static final byte token = 1;
-
     public IntegerValue(Integer value) {
         super(value);
     }
@@ -18,6 +16,11 @@ public class IntegerValue extends ConfigValue<Integer>{
 
     @Override
     public byte getToken() {
-        return token;
+        return ConfigTokens.INTEGER;
+    }
+
+    @Override
+    public Integer getDefault() {
+        return 0;
     }
 }
