@@ -38,15 +38,9 @@ public class C2SSendSyncingConfigPacket implements C2SModPacket {
 
     @Override
     public void handleServer(ServerPlayer player) {
-        PersonalConfigData data = SyncingPersonalConfig.INSTANCE.getData(this.player, player.getServer().overworld());
-        if (data != null){
-            for (Map.Entry<String, ConfigValue<?>> e : map.entrySet()) {
-                data.configMap.merge(e.getKey(), e.getValue(), (old, newOne) -> newOne);
-            }
-        } else {
-            var newData = new PersonalConfigData();
-            newData.configMap.putAll(this.map);
-            SyncingPersonalConfig.INSTANCE.addData(this.player, newData);
+        PersonalConfigData data = SyncingPersonalConfig.INSTANCE.getData(this.player);
+        for (Map.Entry<String, ConfigValue<?>> e : map.entrySet()) {
+            data.configMap.merge(e.getKey(), e.getValue(), (old, newOne) -> newOne);
         }
     }
 

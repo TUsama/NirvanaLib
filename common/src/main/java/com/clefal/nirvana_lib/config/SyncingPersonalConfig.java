@@ -19,14 +19,8 @@ public class SyncingPersonalConfig {
         return new SyncingPersonalConfig();
     }
 
-    @Nullable
-    public PersonalConfigData getData(UUID player, ServerLevel level){
-        PersonalConfigData personalConfigData = map.get(player);
-        if (personalConfigData == null){
-            Player playerByUUID = level.getPlayerByUUID(player);
-            if (playerByUUID != null) playerByUUID.sendSystemMessage(Component.literal("Can't find your syncing config, please rejoin the world!"));
-        }
-        return personalConfigData;
+    public PersonalConfigData getData(UUID player){
+        return map.computeIfAbsent(player, x -> new PersonalConfigData());
     }
 
     public void addData(UUID player, PersonalConfigData data){
