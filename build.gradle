@@ -101,6 +101,7 @@ subprojects {
                 "version": version,
                 "group": project.group, //Else we target the task's group.
                 "minecraft_version": minecraft_version,
+                "fzzy_config_version": fzzy_config_version,
                 "forge_version": forge_version,
                 "forge_loader_version_range": forge_loader_version_range,
                 "forge_version_range": forge_version_range,
