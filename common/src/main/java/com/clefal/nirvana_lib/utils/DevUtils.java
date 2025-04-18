@@ -7,20 +7,24 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class DevUtils {
 
+    public boolean isInDev(){
+        return Services.PLATFORM.isDevelopmentEnvironment();
+    }
+
     public void runWhenOnDev(Runnable runnable){
-        if (Services.PLATFORM.isDevelopmentEnvironment()) {
+        if (isInDev()) {
             runnable.run();
         }
     }
 
     public void runWhenNotOnDev(Runnable runnable){
-        if (!Services.PLATFORM.isDevelopmentEnvironment()) {
+        if (!isInDev()) {
             runnable.run();
         }
     }
 
     public void runOnDifference(Runnable whenOn, Runnable whenOff){
-        if (Services.PLATFORM.isDevelopmentEnvironment()) {
+        if (isInDev()) {
             whenOn.run();
         } else {
             whenOff.run();
