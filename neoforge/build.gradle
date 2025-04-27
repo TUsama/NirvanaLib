@@ -96,26 +96,3 @@ tasks.named('shadowJar', ShadowJar) {
 }
 
 assemble.dependsOn shadowJar
-
-publishMods {
-    file = tasks.shadowJar.archiveFile
-    displayName = file.map { it.asFile.name }
-    changelog = file("..\\changelog.md").text.split('\n').collect { string -> {
-        if (!string.isBlank()) {
-            string + "</br>"
-        } else{
-            string
-        }
-    }}.join('\n')
-    type = ReleaseType.STABLE
-    modLoaders.add("neoforge")
-    curseforge {
-        accessToken = file("D:\\curseforge-key.txt").text
-        projectId = "${project_id}"
-        clientRequired = true
-        minecraftVersionRange {
-            start = "1.21"
-            end = "${minecraft_version}"
-        }
-    }
-}

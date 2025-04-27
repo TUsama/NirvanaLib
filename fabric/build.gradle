@@ -85,26 +85,6 @@ remapJar {
     inputFile = file(tasks.shadowJar.archiveFile)
 }
 
-publishMods {
-    file = tasks.remapJar.archiveFile
-    displayName = file.map { it.asFile.name }
-    changelog = file("..\\changelog.md").text.split('\n').collect { string -> {
-        if (!string.isBlank()) {
-            string + "</br>"
-        } else {
-            string
-        }
-    }}.join('\n')
-    type = STABLE
-    modLoaders.add("fabric")
-    curseforge {
-        accessToken = file("D:\\curseforge-key.txt").text
-        projectId = "${project_id}"
-        minecraftVersionRange {
-            start = "1.21"
-            end = "${minecraft_version}"
-        }
-    }
-}
+
 
 
