@@ -11,6 +11,6 @@ public class NirvanaLibConstants {
     public static final String MOD_ID = "nirvana_lib";
 
     public static ResourceLocation id(String path) {
-        return new ResourceLocation(NirvanaLibConstants.MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(NirvanaLibConstants.MOD_ID, path);
     }
 }

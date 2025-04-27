@@ -15,10 +15,7 @@ public class NirvanaLibCommon {
     }
 
     private static void registerServerPackets() {
-        NetworkUtils.registerServerMessage(C2SSendSyncingConfigPacket.class, C2SSendSyncingConfigPacket::new);
+        NetworkUtils.registerPacket(C2SSendSyncingConfigPacket.TYPE, C2SSendSyncingConfigPacket.class, C2SSendSyncingConfigPacket.CODEC, C2SSendSyncingConfigPacket::handleServer);
     }
 
-    public static ResourceLocation id(String path) {
-        return new ResourceLocation(NirvanaLibConstants.MOD_ID, path);
-    }
 }

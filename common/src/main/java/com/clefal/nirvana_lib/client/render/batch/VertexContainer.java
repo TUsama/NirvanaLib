@@ -61,10 +61,10 @@ public class VertexContainer {
 
         VertexConsumer end = bufferSource.getBuffer(RenderType.gui());
         int color = FastColor.ARGB32.color(0, 0, 0, 0);
-        end.vertex(0, 0, 0).color(color).endVertex();
-        end.vertex(0, 0, 0).color(color).endVertex();
-        end.vertex(0, 0, 0).color(color).endVertex();
-        end.vertex(0, 0, 0).color(color).endVertex();
+        end.addVertex(0, 0, 0).setColor(color);
+        end.addVertex(0, 0, 0).setColor(color);
+        end.addVertex(0, 0, 0).setColor(color);
+        end.addVertex(0, 0, 0).setColor(color);
         RenderSystem.disableDepthTest();
         refresh();
     }

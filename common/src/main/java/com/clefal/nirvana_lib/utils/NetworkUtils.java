@@ -1,38 +1,36 @@
 package com.clefal.nirvana_lib.utils;
 
-import com.clefal.nirvana_lib.network.C2SModPacket;
-import com.clefal.nirvana_lib.network.S2CModPacket;
-import com.clefal.nirvana_lib.platform.Services;
+import com.clefal.nirvana_lib.api.Dispatcher;
+import com.clefal.nirvana_lib.api.Network;
+import com.clefal.nirvana_lib.network.ModPacket;
+import com.clefal.nirvana_lib.networking.data.PacketContext;
 import lombok.experimental.UtilityClass;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 
-import java.util.function.Function;
+import java.util.function.Consumer;
 
 @UtilityClass
 public class NetworkUtils {
 
-    public void sendToClient(S2CModPacket msg, ServerPlayer player){
+    public void sendToClient(ModPacket msg, ServerPlayer player){
         
-        Services.PLATFORM.sendToClient(msg, player);
+        Dispatcher.sendToClient(msg, player);
     }
 
-    public void  sendToClients(S2CModPacket msg, Iterable<ServerPlayer> playerList){
-        for (ServerPlayer serverPlayer : playerList) {
-            Services.PLATFORM.sendToClient(msg, serverPlayer);
-        }
+    public void  sendToClients(ModPacket msg, Iterable<ServerPlayer> playerList){
+        playerList.forEach(x -> sendToClient(msg, x));
     }
 
-    public void sendToServer(C2SModPacket msg){
-        Services.PLATFORM.sendToServer(msg);
+    public void sendToServer(ModPacket msg){
+        Dispatcher.sendToServer(msg);
     }
 
-    public <MSG extends S2CModPacket> void registerClientMessage(Class<MSG> packetClass, Function<FriendlyByteBuf, MSG> reader){
-        Services.PLATFORM.registerClientMessage(packetClass, reader);
+    public <MSG extends ModPacket> void registerPacket(CustomPacketPayload.Type<? extends CustomPacketPayload> type, Class<MSG> packetClass, StreamCodec<? extends FriendlyByteBuf, MSG> codec, Consumer<PacketContext<MSG>> handler){
+        Network.registerPacket(type, packetClass, codec, handler);
     }
 
-    public <MSG extends C2SModPacket> void registerServerMessage(Class<MSG> packetClass, Function<FriendlyByteBuf, MSG> reader){
-        Services.PLATFORM.registerServerMessage(packetClass, reader);
-    }
 
 }
