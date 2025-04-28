@@ -36,6 +36,7 @@ publishMods {
             start = "1.21"
             end = "${minecraft_version}"
         }
+
     }
 
     // Modrinth options used by both Fabric and Forge
@@ -56,6 +57,7 @@ publishMods {
         requires {
             slug = "fabric-api"
         }
+        displayName = file.map { it.asFile.name }
     }
 
     // Forge specific options for CurseForge
@@ -63,6 +65,7 @@ publishMods {
         from cfOptions
         file = project.provider { project(":neoforge").tasks.shadowJar }.flatMap { it.archiveFile }
         modLoaders.add("neoforge")
+        displayName = file.map { it.asFile.name }
     }
 
     // Fabric specific options for Modrinth
@@ -73,6 +76,7 @@ publishMods {
         requires {
             slug = "fabric-api"
         }
+        displayName = file.map { it.asFile.name }
     }
 
     // Forge specific options for Modrinth
@@ -80,6 +84,8 @@ publishMods {
         from mrOptions
         file = project.provider { project(":neoforge").tasks.shadowJar }.flatMap { it.archiveFile }
         modLoaders.add("neoforge")
+        displayName = file.map { it.asFile.name }
     }
+
 }
 

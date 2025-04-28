@@ -1,20 +1,18 @@
 package com.clefal.nirvana_lib.networking;
 
 
-import com.clefal.nirvana_lib.Constants;
+import com.clefal.nirvana_lib.NirvanaLibConstants;
 import com.clefal.nirvana_lib.networking.data.CommonPacketWrapper;
 import com.clefal.nirvana_lib.networking.data.PacketContainer;
 import com.clefal.nirvana_lib.networking.data.PacketContext;
 import com.clefal.nirvana_lib.networking.data.Side;
 import com.clefal.nirvana_lib.networking.exceptions.RegistrationException;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.protocol.common.ServerboundCustomPayloadPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.LogicalSide;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadHandler;
 
@@ -101,7 +99,7 @@ public class NeoForgeNetworkHandler extends PacketRegistrationHandler
             }
             catch (Throwable t)
             {
-                Constants.LOG.error("Error handling packet: {} -> ", payload.packet().getClass(), t);
+                NirvanaLibConstants.LOGGER.error("Error handling packet: {} -> ", payload.packet().getClass(), t);
             }
         };
     }

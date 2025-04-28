@@ -17,16 +17,6 @@ public record PacketContainer<T>(
         StreamCodec<? super FriendlyByteBuf, T> codec,
         Consumer<PacketContext<T>> handler)
 {
-    //TODO: Removing for mc 1.21.2 or 1.22
-    @Deprecated(forRemoval = true)
-    public PacketContainer(ResourceLocation id,
-                           Class<T> classType,
-                           BiConsumer<T, FriendlyByteBuf> encoder,
-                           Function<FriendlyByteBuf, T> decoder,
-                           Consumer<PacketContext<T>> handle)
-    {
-        this(new CustomPacketPayload.Type<>(id), classType, encoder, decoder, null, handle);
-    }
 
     @SuppressWarnings("unchecked")
     public <B extends FriendlyByteBuf> PacketContainer(CustomPacketPayload.Type<? extends CustomPacketPayload> type,

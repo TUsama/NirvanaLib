@@ -1,7 +1,8 @@
 package com.clefal.nirvana_lib.networking;
 
 
-import com.clefal.nirvana_lib.Constants;
+import com.clefal.nirvana_lib.NirvanaLib;
+import com.clefal.nirvana_lib.NirvanaLibConstants;
 import com.clefal.nirvana_lib.networking.data.CommonPacketWrapper;
 import com.clefal.nirvana_lib.networking.data.PacketContainer;
 import com.clefal.nirvana_lib.networking.data.PacketContext;
@@ -35,7 +36,7 @@ public class FabricNetworkHandler extends PacketRegistrationHandler
 
         if (Side.CLIENT.equals(this.side))
         {
-            Constants.LOG.debug("Registering packet {} : {} on the: {}", container.type().id(), container.classType(), Side.CLIENT);
+            NirvanaLibConstants.LOGGER.debug("Registering packet {} : {} on the: {}", container.type().id(), container.classType(), Side.CLIENT);
 
             ClientPlayNetworking.registerGlobalReceiver(container.getType(),
                     (ClientPlayNetworking.PlayPayloadHandler<CommonPacketWrapper<T>>) (payload, context) -> context.client().execute(() ->
@@ -43,7 +44,7 @@ public class FabricNetworkHandler extends PacketRegistrationHandler
                                     new PacketContext<>(payload.packet(), Side.CLIENT))));
         }
 
-        Constants.LOG.debug("Registering packet {} : {} on the: {}", container.type().id(), container.classType(), Side.SERVER);
+        NirvanaLibConstants.LOGGER.debug("Registering packet {} : {} on the: {}", container.type().id(), container.classType(), Side.SERVER);
         ServerPlayNetworking.registerGlobalReceiver(container.getType(),
                 (ServerPlayNetworking.PlayPayloadHandler<CommonPacketWrapper<T>>) (payload, context) -> context.player().server.execute(() ->
                         container.handler().accept(

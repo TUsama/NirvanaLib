@@ -30,13 +30,6 @@ public class DelayedPacketRegistrationHandler  implements PacketRegistrar
         return Side.CLIENT;
     }
 
-    @Override
-    public <T> PacketRegistrar registerPacket(ResourceLocation id, Class<T> packetClass, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, Consumer<PacketContext<T>> handler)
-    {
-        PacketContainer<T> container = new PacketContainer<>(id, packetClass, encoder, decoder, handler);
-        QUEUED_PACKET_MAP.put(packetClass, container);
-        return this;
-    }
 
     @Override
     public <T> PacketRegistrar registerPacket(CustomPacketPayload.Type<? extends CustomPacketPayload> type, Class<T> packetClass, StreamCodec<? extends FriendlyByteBuf, T> codec, Consumer<PacketContext<T>> handler)

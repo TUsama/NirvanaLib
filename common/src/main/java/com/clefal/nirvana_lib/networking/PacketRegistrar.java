@@ -19,20 +19,6 @@ public interface PacketRegistrar
      */
     Side getSide();
 
-    /**
-     * Packet Registration
-     *
-     * @param packetIdentifier - The unique {@link ResourceLocation} packet id.
-     * @param packetClass      - The class of the packet.
-     * @param encoder          - The encoder method.
-     * @param decoder          - The decoder method.
-     * @param handler          - The handler method.
-     * @param <T>              - The class type
-     * @return The registrar for chaining registrations.
-     * @deprecated this method will eventually be removed, please migrate to the method supplying your own encoding/decoding codec. Likely in 1.21.2 or 1.22.
-     */
-    @Deprecated(forRemoval = true)
-    <T> PacketRegistrar registerPacket(ResourceLocation packetIdentifier, Class<T> packetClass, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, Consumer<PacketContext<T>> handler);
 
     /**
      * Packet Registration
