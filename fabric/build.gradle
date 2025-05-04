@@ -75,7 +75,7 @@ processResources {
 shadowJar {
     configurations = [project.configurations.shade]
     archiveClassifier = "shadow"
-    relocate 'net.neoforged.bus', "${project.group}.relocated.net.neoforged.bus"
+    //relocate 'net.neoforged.bus', "${project.group}.relocated.net.neoforged.bus"
     relocate 'io.vavr', "${project.group}.relocated.io.vavr"
 }
 

@@ -11,8 +11,8 @@ public class NirvanaLib implements ModInitializer {
     @Override
     public void onInitialize() {
         DevUtils.announceDevEnabled();
-        NirvanaLibCommon.packetInit();
         var env = FabricLoader.getInstance().getEnvironmentType().equals(EnvType.CLIENT) ? Side.CLIENT : Side.SERVER;
         new CommonNetworkMod(new FabricNetworkHandler(env));
+        NirvanaLibCommon.packetInit();
     }
 }

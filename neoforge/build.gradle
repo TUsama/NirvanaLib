@@ -69,12 +69,12 @@ dependencies {
     shade "io.vavr:vavr:0.10.4"
     additionalRuntimeClasspath "io.vavr:vavr:0.10.4"
 
-    shade ("net.neoforged:bus:${neoforge_eventbus_version}") {
+    /*shade ("net.neoforged:bus:${neoforge_eventbus_version}") {
         exclude group: "org.ow2.asm"
         exclude group: "net.jodah"
         exclude group: "org.apache.logging.log4j"
         exclude group: "cpw.mods", module: "modlauncher"
-    }
+    }*/
 
     implementation "me.fzzyhmstrs:fzzy_config:${fzzy_config_version}+neoforge"
 }
@@ -93,7 +93,7 @@ shadowJar {
 tasks.named('shadowJar', ShadowJar) {
     archiveClassifier = ''
     configurations = [project.configurations.shade]
-    relocate 'net.neoforged.bus', "${project.group}.relocated.net.neoforged.bus"
+    //relocate ('net.neoforged.bus', "${project.group}.relocated.net.neoforged.bus") {exclude 'net.neoforged.bus.api.IEventBus'}
     relocate 'io.vavr', "${project.group}.relocated.io.vavr"
 }
 
