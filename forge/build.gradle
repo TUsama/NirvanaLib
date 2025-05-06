@@ -159,6 +159,11 @@ publishMods {
         projectId = "${project_id}"
         minecraftVersions.add("1.20.1")
     }
+    modrinth {
+        accessToken = file("D:\\modrinth-key.txt").text
+        projectId = "6gKEW2ql"
+        minecraftVersions.add("${minecraft_version}")
+    }
 }
 
 
