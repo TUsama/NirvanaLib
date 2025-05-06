@@ -60,7 +60,7 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
 
 
-    implementation "io.vavr:vavr:0.10.4"
+    implementation "io.vavr:vavr:${vavr_version}"
     implementation ("net.neoforged:bus:${neoforge_eventbus_version}") {
         exclude group: "org.ow2.asm"
         exclude group: "net.jodah"

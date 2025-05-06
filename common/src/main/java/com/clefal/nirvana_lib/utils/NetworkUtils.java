@@ -4,6 +4,7 @@ import com.clefal.nirvana_lib.api.Dispatcher;
 import com.clefal.nirvana_lib.api.Network;
 import com.clefal.nirvana_lib.network.ModPacket;
 import com.clefal.nirvana_lib.networking.data.PacketContext;
+import io.vavr.collection.List;
 import lombok.experimental.UtilityClass;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;

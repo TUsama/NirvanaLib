@@ -66,8 +66,8 @@ dependencies {
 
 
 
-    shade "io.vavr:vavr:0.10.4"
-    additionalRuntimeClasspath "io.vavr:vavr:0.10.4"
+    shade "io.vavr:vavr:${vavr_version}"
+    additionalRuntimeClasspath "io.vavr:vavr:${vavr_version}"
 
     /*shade ("net.neoforged:bus:${neoforge_eventbus_version}") {
         exclude group: "org.ow2.asm"
