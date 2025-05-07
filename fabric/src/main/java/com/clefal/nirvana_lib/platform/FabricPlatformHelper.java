@@ -65,7 +65,16 @@ public class FabricPlatformHelper implements IPlatformHelper {
     }
 
     protected ResourceLocation packet(Class<?> clazz) {
-        return NirvanaLibConstants.id(clazz.getName().toLowerCase(Locale.ROOT));
+        String lowerCase = clazz.getName().toLowerCase(Locale.ROOT);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (char c : lowerCase.toCharArray()) {
+            if (Character.isLetter(c)){
+                stringBuilder.append(c);
+            } else {
+                stringBuilder.append("/");
+            }
+        }
+        return NirvanaLibConstants.id(stringBuilder.toString());
     }
 
 }
