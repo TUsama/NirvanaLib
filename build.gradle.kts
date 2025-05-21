@@ -1,6 +1,5 @@
 import deps.DependencyConfig
 import deps.Loaders
-import okio.Utf8
 
 plugins {
     id("dev.isxander.modstitch.base") version "0.5.12"
@@ -51,7 +50,7 @@ modstitch {
         modId = mid
         modName = "Nirvana Lib"
         modVersion = modv
-        modGroup = "me.clefal"
+        modGroup = "com.clefal"
         modAuthor = "Clefal"
         modDescription =
             "Library mod for Clefal"
@@ -84,6 +83,7 @@ modstitch {
                 else -> ""
             })
             put("fzzy_config_version", property("deps.fzzy_config_version") as String)
+            put("common_networking_version", property("deps.common_networking_ingame_version") as String)
         }
     }
 

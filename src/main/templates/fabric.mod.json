@@ -7,7 +7,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "me.clefal.nirvana_lib.loaders.fabric.FabricEntryPoint"
+      "com.clefal.nirvana_lib.loaders.fabric.FabricEntryPoint"
     ]
 
   },

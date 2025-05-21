@@ -13,6 +13,7 @@ license = "${mod_license}"
 [[dependencies.${mod_id}]]
     modId = "neoforge"
     type = "required"
+    versionRange = "[21,)"
     ordering = "NONE"
     side = "BOTH"
 
@@ -27,4 +28,5 @@ license = "${mod_license}"
     type = "required"
 [[dependencies.${mod_id}]]
     modId = "commonnetworking"
+    versionRange = "${common_networking_version}"
     mandatory = true

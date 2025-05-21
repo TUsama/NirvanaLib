@@ -1,8 +1,0 @@
-package me.clefal.nirvana_lib.render.batch;
-
-import com.mojang.blaze3d.vertex.VertexConsumer;
-
-public interface IBufferInfo {
-
-    void upload(VertexConsumer consumer);
-}
