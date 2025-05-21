@@ -20,6 +20,7 @@
     "fabricloader": ">=${target_fabricloader}",
     "fabric": "*",
     "fzzy_config": ">=${fzzy_config_version}",
-    "minecraft": "=${target_minecraft}"
+    "minecraft": "=${target_minecraft}",
+    "commonnetworking": "*"
   }
 }

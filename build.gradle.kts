@@ -1,6 +1,11 @@
+import deps.DependencyConfig
+import deps.Loaders
+import okio.Utf8
+
 plugins {
     id("dev.isxander.modstitch.base") version "0.5.12"
     id("dev.isxander.modstitch.shadow") version "0.5.12"
+    id("dev.isxander.modstitch.publishing") version "0.5.12"
 }
 
 fun prop(name: String, consumer: (prop: String) -> Unit) {
@@ -49,7 +54,7 @@ modstitch {
         modGroup = "me.clefal"
         modAuthor = "Clefal"
         modDescription =
-            ""
+            "Library mod for Clefal"
         modLicense = "MIT"
         fun <K, V> MapProperty<K, V>.populate(block: MapProperty<K, V>.() -> Unit) {
             block()
@@ -58,7 +63,7 @@ modstitch {
             // You can put any other replacement properties/metadata here that
             // modstitch doesn't initially support. Some examples below.
             put("mod_issue_tracker", "https://github.com/TUsama/Loot-Beams-Refork/issues")
-            put("pack_format", when (property("deps.minecraft")) {
+            put("pformat", when (property("deps.minecraft")) {
                 "1.20.1" -> 15
                 "1.21.1" -> 34
                 "1.21.4" -> 46
@@ -66,7 +71,7 @@ modstitch {
             }.toString())
 
             put("target_minecraft", mcVersion)
-            put("target_lib", property("deps.lib") as String)
+            //put("target_lib", property("deps.lib") as String)
             put(
                 "target_loader", when (loader) {
                     "neoforge" -> property("deps.neoforge") as String
@@ -158,8 +163,9 @@ stonecutter {
 }
 
 tasks.named<Copy>("processResources") {
-    duplicatesStrategy = DuplicatesStrategy.WARN
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
 msShadow{
     relocatePackage.set("${modstitch.metadata.modGroup.get()}.${modstitch.metadata.modId.get()}.relocated")
     dependency("io.vavr:vavr:0.10.6", mapOf("io.vavr" to "io.vavr"))
@@ -171,51 +177,109 @@ msShadow{
 // If you want to create proxy configurations for more source sets, such as client source sets,
 // use the modstitch.createProxyConfigurations(sourceSets["client"]) function.
 dependencies {
+    val loader = when {
+        modstitch.isLoom -> Loaders.LOOM
+        modstitch.isModDevGradleLegacy -> Loaders.FORGE
+        modstitch.isModDevGradleRegular -> Loaders.NEOFORGE
+        else -> throw IllegalArgumentException("unknown loader")
+    }
+
+    val fzzyConfigVersion = findProperty("deps.fzzy_config_version")
+    val fzzyMinecraftVersion = when (minecraft) {
+        "1.21.1" -> "1.21"
+        "1.21.4" -> "1.21.3"
+        else -> minecraft
+    }
+
+    modstitchModApi("maven.modrinth:common-network:${property("deps.common_network")}")
+
+    //fzzy
     modstitch.loom {
         val fabricApi = property("deps.fabric_api") as String
         modstitchModImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApi}+${minecraft}")
+        modstitchModApi ("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}")
     }
 
+    modstitch.moddevgradle{
+        if (modstitch.isModDevGradleLegacy) {
+            modstitchModApi(("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+forge"))
+        } else {
+            modstitchModApi(("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+neoforge"))
+        }
+    }
+
+
+    //loader-specified deps
+    DependencyConfig.getDependencies(loader, minecraft).forEach{ dep ->
+        dependencies.add(dep.configuration, dep.notation, dep.options)
+    }
+    //lombok
     modstitchCompileOnly ("org.projectlombok:lombok:1.18.34")
     annotationProcessor ("org.projectlombok:lombok:1.18.34")
 
     testCompileOnly ("org.projectlombok:lombok:1.18.34")
     testAnnotationProcessor ("org.projectlombok:lombok:1.18.34")
 
-    val fzzyConfigVersion = findProperty("deps.fzzy_config_version") as? String?
-    val cnv = findProperty("deps.common_network") as? String?
-
-    "io.vavr:vavr:0.10.6".let{
-        modstitchImplementation(it)
-    }
-
-    "net.neoforged:bus:8.0.2".let {
-        modstitchImplementation(it)
-    }
-
-    modstitchModApi("maven.modrinth:common-network:${cnv}")
-
-    if (modstitch.isLoom) {
-        if (minecraft == "1.21.1"){
-
-        } else if (minecraft == "1.20.1"){
-
-            modstitchModApi ("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${minecraft}")
+    //shadow dep
+    modstitchImplementation("io.vavr:vavr:0.10.6")
+    modstitchImplementation("net.neoforged:bus:8.0.2")
 
 
-        } else if (minecraft == "1.21.5") {
 
-        }
-    } else if (modstitch.isModDevGradleRegular){
-        if (minecraft == "1.21.1"){
-
-        }  else if (minecraft == "1.21.5") {
-
-        }
-    } else if (modstitch.isModDevGradleLegacy) {
-
-        modstitchModApi(("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${minecraft}+forge"))
-
-    }
     // Anything else in the dependencies block will be used for all platforms.
+}
+
+msPublishing{
+
+
+    mpp{
+        changelog = file("../../changelog.md")
+            .readLines()
+            .joinToString("\n") { line ->
+                if (line.isNotBlank()) {
+                    "$line</br>"
+                } else {
+                    line
+                }
+            }
+        type = STABLE
+        modLoaders.add(loader)
+        /*
+        when (loader) {
+            "fabric" -> file.set(project.tasks.remapJar.map { it.archiveFile }.get())
+            "forge", "neoforge" -> file.set(project.tasks.shadowJar.map { it.archiveFile }.get())
+            else -> throw throw IllegalArgumentException("Can't find the file to be published! loader: $loader")
+        }*/
+
+        file.set(modstitch.finalJarTask.map { it.archiveFile }.get())
+        displayName = file.map { it.asFile.name }
+        dryRun = true
+        // CurseForge options used by both Fabric and Forge
+        val cfOptions = curseforgeOptions {
+            accessToken = file("D:\\curseforge-key.txt").readText()
+            projectId = "1164411"
+            minecraftVersions.add(mcVersion)
+            requires("fzzy-config", "common-network")
+        }
+
+        // Modrinth options used by both Fabric and Forge
+        val mrOptions = modrinthOptions {
+            accessToken = file("D:\\modrinth-key.txt").readText()
+            version="${loader}-${modstitch.metadata.modVersion.get()}"
+            projectId = "6gKEW2ql"
+            minecraftVersions.add(mcVersion)
+            requires("fzzy-config", "common-network")
+        }
+
+        curseforge("toCurseForge") {
+            from (cfOptions)
+        }
+
+
+        modrinth("toModrinth") {
+            from (mrOptions)
+        }
+
+    }
+
 }
