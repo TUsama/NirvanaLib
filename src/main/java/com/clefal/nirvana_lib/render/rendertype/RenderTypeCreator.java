@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-//? if ~1.21 && neoforge || (>1.21.1 && fabric) {
+//? if >1.21.1 {
 /*import net.minecraft.util.TriState;
 import net.minecraft.client.renderer.RenderStateShard;
 *///?} else {
@@ -22,7 +22,7 @@ public class RenderTypeCreator extends RenderType {
 
     public static final Function<ResourceLocation, RenderType> gui = Util.memoize(resourceLocation -> createRenderType("nl_normal_gui", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 1024, false, false,
             CompositeState.builder()
-                    //? if (~1.21 && neoforge) || (>1.21.1 && fabric) {
+                    //? if (>1.21.1) {
 
                     /*.setShaderState(RenderStateShard.POSITION_TEXTURE_COLOR_SHADER)
                     .setTextureState(new TextureStateShard(resourceLocation, TriState.FALSE, false))

@@ -18,7 +18,6 @@ val loader = when {
     modstitch.isModDevGradleLegacy -> "forge"
     else -> throw IllegalStateException("Unsupported loader")
 }
-val mcVersion = property("deps.minecraft") as String
 
 val minecraft = property("deps.minecraft") as String
 
@@ -69,7 +68,7 @@ modstitch {
                 else -> throw IllegalArgumentException("Please store the resource pack version for ${property("deps.minecraft")} in build.gradle.kts! https://minecraft.wiki/w/Pack_format")
             }.toString())
 
-            put("target_minecraft", mcVersion)
+            put("target_minecraft", minecraft)
             //put("target_lib", property("deps.lib") as String)
             put(
                 "target_loader", when (loader) {
@@ -93,7 +92,13 @@ modstitch {
         // Make sure its up to date.
         fabricLoaderVersion = "0.16.10"
         configureLoom{
-            accessWidenerPath.set(file("../../src/main/resources/${mid}.accesswidener"))
+            runs {
+                all {
+                    runDir = "../../run"
+                    ideConfigGenerated(true)
+                }
+                accessWidenerPath.set(file("../../src/main/resources/${mid}.accesswidener"))
+            }
         }
         // Configure loom like normal in this block.
         configureLoom {
@@ -111,12 +116,6 @@ modstitch {
         }
 
         configureNeoforge{
-            parchment{
-                prop("deps.parchment") {
-                    if (minecraft == "1.21.1") minecraftVersion.set("1.21")
-                    mappingsVersion = it
-                }
-            }
             setAccessTransformers("../../src/main/resources/META-INF/accesstransformer.cfg")
             validateAccessTransformers = false
         }
@@ -128,6 +127,7 @@ modstitch {
         configureNeoforge {
             runs.all {
                 disableIdeRun()
+                gameDirectory = file("../../run")
             }
         }
     }
@@ -258,7 +258,7 @@ msPublishing{
         val cfOptions = curseforgeOptions {
             accessToken = file("D:\\curseforge-key.txt").readText()
             projectId = "1164411"
-            minecraftVersions.add(mcVersion)
+            minecraftVersions.add(minecraft)
             requires("fzzy-config", "common-network")
         }
 
@@ -267,7 +267,7 @@ msPublishing{
             accessToken = file("D:\\modrinth-key.txt").readText()
             version="${loader}-${modstitch.metadata.modVersion.get()}"
             projectId = "6gKEW2ql"
-            minecraftVersions.add(mcVersion)
+            minecraftVersions.add(minecraft)
             requires("fzzy-config", "common-network")
         }
 

@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-//? if =1.20.1 || (<=1.21.1 && fabric) {
+//? if <=1.21.1 {
 import net.minecraft.util.FastColor;
 //?} else {
 /*import net.minecraft.util.ARGB;
@@ -66,7 +66,7 @@ public class VertexContainer {
         VertexConsumer end = bufferSource.getBuffer(RenderType.gui());
         int color;
 
-        //? if =1.20.1 || (<=1.21.1 && fabric) {
+        //? if <=1.21.1 {
          color = FastColor.ARGB32.color(0, 0, 0, 0);
          //?} else {
             /*color = ARGB.color(0, 0, 0, 0);
@@ -74,16 +74,16 @@ public class VertexContainer {
 
         //? if ~1.21 {
         
-        /*end.addVertex(0, 0, 0).setColor(color);
         end.addVertex(0, 0, 0).setColor(color);
         end.addVertex(0, 0, 0).setColor(color);
         end.addVertex(0, 0, 0).setColor(color);
-        *///?} else {
+        end.addVertex(0, 0, 0).setColor(color);
+        //?} else {
+        /*end.vertex(0, 0, 0).color(color).endVertex();
         end.vertex(0, 0, 0).color(color).endVertex();
         end.vertex(0, 0, 0).color(color).endVertex();
         end.vertex(0, 0, 0).color(color).endVertex();
-        end.vertex(0, 0, 0).color(color).endVertex();
-        //?}
+        *///?}
         RenderSystem.disableDepthTest();
         refresh();
     }

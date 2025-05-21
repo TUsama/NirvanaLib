@@ -5,10 +5,10 @@ import lombok.experimental.UtilityClass;
 //? if forge {
 /*import net.minecraftforge.fml.loading.FMLLoader;
 *///?} else if (fabric) {
-import net.fabricmc.loader.api.FabricLoader;
-//?} else if (neoforge) {
-/*import net.neoforged.fml.loading.FMLLoader;
-*///?}
+/*import net.fabricmc.loader.api.FabricLoader;
+*///?} else if (neoforge) {
+import net.neoforged.fml.loading.FMLLoader;
+//?}
 
 
 @UtilityClass
@@ -18,10 +18,10 @@ public class DevUtils {
         //? if forge {
         /*return !FMLLoader.isProduction();
         *///?} else if (fabric) {
-        return FabricLoader.getInstance().isDevelopmentEnvironment();
-        //?} else if (neoforge) {
-        /*return !FMLLoader.isProduction();
-        *///?}
+        /*return FabricLoader.getInstance().isDevelopmentEnvironment();
+        *///?} else if (neoforge) {
+        return !FMLLoader.isProduction();
+        //?}
     }
 
     public void runWhenOnDev(Runnable runnable){
