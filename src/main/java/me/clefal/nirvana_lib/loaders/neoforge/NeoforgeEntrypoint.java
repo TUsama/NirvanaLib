@@ -1,6 +1,6 @@
 //? if neoforge {
 
-/*package me.clefal.nirvana_lib.loaders.neoforge;
+package me.clefal.nirvana_lib.loaders.neoforge;
 
 import com.mojang.logging.LogUtils;
 import me.clefal.nirvana_lib.NirvanaLibCommon;
@@ -17,4 +17,4 @@ public class NeoforgeEntrypoint {
     }
 }
 
-*///?}
+//?}

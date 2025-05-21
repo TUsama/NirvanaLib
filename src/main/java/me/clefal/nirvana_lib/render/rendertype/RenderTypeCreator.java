@@ -7,12 +7,12 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-//? if ~1.21 && neoforge {
-/*import net.minecraft.util.TriState;
+//? if ~1.21 && neoforge || (>1.21.1 && fabric) {
+import net.minecraft.util.TriState;
 import net.minecraft.client.renderer.RenderStateShard;
-*///?} else {
-import net.minecraft.client.renderer.GameRenderer;
-//?}
+//?} else {
+/*import net.minecraft.client.renderer.GameRenderer;
+*///?}
 
 import org.lwjgl.opengl.GL11;
 
@@ -22,14 +22,14 @@ public class RenderTypeCreator extends RenderType {
 
     public static final Function<ResourceLocation, RenderType> gui = Util.memoize(resourceLocation -> createRenderType("nl_normal_gui", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 1024, false, false,
             CompositeState.builder()
-                    //? if ~1.21 && neoforge {
+                    //? if (~1.21 && neoforge) || (>1.21.1 && fabric) {
 
-                    /*.setShaderState(RenderStateShard.POSITION_TEXTURE_COLOR_SHADER)
+                    .setShaderState(RenderStateShard.POSITION_TEXTURE_COLOR_SHADER)
                     .setTextureState(new TextureStateShard(resourceLocation, TriState.FALSE, false))
-                 *///?} else {
-                    .setShaderState(new ShaderStateShard(GameRenderer::getPositionTexColorShader))
+                 //?} else {
+                    /*.setShaderState(new ShaderStateShard(GameRenderer::getPositionTexColorShader))
                     .setTextureState(new TextureStateShard(resourceLocation, false, false))
-                    //?}
+                    *///?}
 
                     .setTransparencyState(new TransparencyStateShard("normal_blend", RenderSystem::enableBlend, RenderSystem::disableBlend))
                     .setDepthTestState(new DepthTestStateShard("nl_normal_gui_depth", GL11.GL_LEQUAL))

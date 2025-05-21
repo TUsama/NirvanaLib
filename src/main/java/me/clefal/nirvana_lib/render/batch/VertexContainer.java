@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-//? if =1.20.1 && fabric {
+//? if =1.20.1 || (<=1.21.1 && fabric) {
 /*import net.minecraft.util.FastColor;
 *///?} else {
 import net.minecraft.util.ARGB;
@@ -66,7 +66,7 @@ public class VertexContainer {
         VertexConsumer end = bufferSource.getBuffer(RenderType.gui());
         int color;
 
-        //? if =1.20.1 && fabric {
+        //? if =1.20.1 || (<=1.21.1 && fabric) {
          /*color = FastColor.ARGB32.color(0, 0, 0, 0);
          *///?} else {
             color = ARGB.color(0, 0, 0, 0);
