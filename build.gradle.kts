@@ -11,7 +11,11 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
     (findProperty(name) as? String?)
         ?.let(consumer)
 }
+
+
 val modv = "1.2.1"
+
+
 val loader = when {
     modstitch.isLoom -> "fabric"
     modstitch.isModDevGradleRegular -> "neoforge"
@@ -100,10 +104,6 @@ modstitch {
                 accessWidenerPath.set(file("../../src/main/resources/${mid}.accesswidener"))
             }
         }
-        // Configure loom like normal in this block.
-        configureLoom {
-
-        }
     }
 
     // ModDevGradle (NeoForge, Forge, Forgelike)
@@ -115,16 +115,14 @@ modstitch {
             prop("deps.mcp") { mcpVersion = it }
         }
 
-        configureNeoforge{
-            setAccessTransformers("../../src/main/resources/META-INF/accesstransformer.cfg")
-            validateAccessTransformers = false
-        }
         // Configures client and server runs for MDG, it is not done by default
         defaultRuns()
 
         // This block configures the `neoforge` extension that MDG exposes by default,
         // you can configure MDG like normal from here
         configureNeoforge {
+            setAccessTransformers("../../src/main/resources/META-INF/accesstransformer.cfg")
+            validateAccessTransformers = false
             runs.all {
                 disableIdeRun()
                 gameDirectory = file("../../run")
@@ -136,7 +134,7 @@ modstitch {
         // You do not need to specify mixins in any mods.json/toml file if this is set to
         // true, it will automatically be generated.
         addMixinsToModManifest = true
-        configs.register("nirvana_lib")
+        configs.register(mid)
 
         // Most of the time you wont ever need loader specific mixins.
         // If you do, simply make the mixin file and add it like so for the respective loader:
@@ -191,7 +189,7 @@ dependencies {
         else -> minecraft
     }
 
-    modstitchModApi("maven.modrinth:common-network:${property("deps.common_network")}")
+    modstitchModImplementation("maven.modrinth:common-network:${property("deps.common_network")}")
 
     //fzzy
     modstitch.loom {
@@ -244,12 +242,6 @@ msPublishing{
             }
         type = STABLE
         modLoaders.add(loader)
-        /*
-        when (loader) {
-            "fabric" -> file.set(project.tasks.remapJar.map { it.archiveFile }.get())
-            "forge", "neoforge" -> file.set(project.tasks.shadowJar.map { it.archiveFile }.get())
-            else -> throw throw IllegalArgumentException("Can't find the file to be published! loader: $loader")
-        }*/
 
         file.set(modstitch.finalJarTask.map { it.archiveFile }.get())
         displayName = file.map { it.asFile.name }
