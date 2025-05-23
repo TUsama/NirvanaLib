@@ -1,14 +1,15 @@
 package com.clefal.nirvana_lib.utils;
 
 import com.clefal.nirvana_lib.NirvanaLibConstants;
+import com.clefal.nirvana_lib.network.packets.C2SSendSyncingConfigPacket;
 import lombok.experimental.UtilityClass;
 //? if forge {
-/*import net.minecraftforge.fml.loading.FMLLoader;
-*///?} else if (fabric) {
+import net.minecraftforge.fml.loading.FMLLoader;
+//?} else if (fabric) {
 /*import net.fabricmc.loader.api.FabricLoader;
 *///?} else if (neoforge) {
-import net.neoforged.fml.loading.FMLLoader;
-//?}
+/*import net.neoforged.fml.loading.FMLLoader;
+*///?}
 
 
 @UtilityClass
@@ -16,12 +17,12 @@ public class DevUtils {
 
     public boolean isInDev(){
         //? if forge {
-        /*return !FMLLoader.isProduction();
-        *///?} else if (fabric) {
+        return !FMLLoader.isProduction();
+        //?} else if (fabric) {
         /*return FabricLoader.getInstance().isDevelopmentEnvironment();
         *///?} else if (neoforge) {
-        return !FMLLoader.isProduction();
-        //?}
+        /*return !FMLLoader.isProduction();
+        *///?}
     }
 
     public void runWhenOnDev(Runnable runnable){

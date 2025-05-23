@@ -14,10 +14,10 @@ public class NirvanaLibConstants {
         ResourceLocation location;
         //? if =1.20.1 {
         
-        /*location = new ResourceLocation(NirvanaLibConstants.MOD_ID, path);
-         *///?} else {
-        location = ResourceLocation.fromNamespaceAndPath(NirvanaLibConstants.MOD_ID, path);
-        //?}
+        location = new ResourceLocation(NirvanaLibConstants.MOD_ID, path);
+         //?} else {
+        /*location = ResourceLocation.fromNamespaceAndPath(NirvanaLibConstants.MOD_ID, path);
+        *///?}
         return location;
     }
 }

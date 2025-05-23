@@ -1,4 +1,4 @@
-package com.clefal.nirvana_lib.render.batch;
+package com.clefal.nirvana_lib.client.render.batch;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import org.joml.Matrix4f;
@@ -25,15 +25,15 @@ public record FillGradientBufferInfo(float minX, float minY, float maxX, float m
     @Override
     public void upload(VertexConsumer consumer) {
         //? if ~1.21 {
-        consumer.addVertex(matrix4f, minX, minY, z).setColor(rF, gF, bF, aF);
+        /*consumer.addVertex(matrix4f, minX, minY, z).setColor(rF, gF, bF, aF);
         consumer.addVertex(matrix4f, minX, maxY, z).setColor(rT, gT, bT, aT);
         consumer.addVertex(matrix4f, maxX, maxY, z).setColor(rT, gT, bT, aT);
         consumer.addVertex(matrix4f, maxX, minY, z).setColor(rF, gF, bF, aF);
-        //?} else {
-        /*consumer.vertex(matrix4f, minX, minY, z).color(rF, gF, bF, aF).endVertex();
+        *///?} else {
+        consumer.vertex(matrix4f, minX, minY, z).color(rF, gF, bF, aF).endVertex();
         consumer.vertex(matrix4f, minX, maxY, z).color(rT, gT, bT, aT).endVertex();
         consumer.vertex(matrix4f, maxX, maxY, z).color(rT, gT, bT, aT).endVertex();
         consumer.vertex(matrix4f, maxX, minY, z).color(rF, gF, bF, aF).endVertex();
-        *///?}
+        //?}
     }
 }

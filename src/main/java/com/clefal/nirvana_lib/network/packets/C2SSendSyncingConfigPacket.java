@@ -1,25 +1,25 @@
 package com.clefal.nirvana_lib.network.packets;
 
 import com.clefal.nirvana_lib.config.*;
+import com.clefal.nirvana_lib.network.newtoolchain.C2SModPacket;
 import commonnetwork.networking.data.PacketContext;
 import lombok.Getter;
 import com.clefal.nirvana_lib.NirvanaLibConstants;
-import com.clefal.nirvana_lib.network.ModPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 //? if ~1.21 {
-import net.minecraft.network.codec.StreamCodec;
+/*import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-//?}
+*///?}
 import java.util.*;
 
 @Getter
-public class C2SSendSyncingConfigPacket implements ModPacket<C2SSendSyncingConfigPacket> {
+public class C2SSendSyncingConfigPacket implements C2SModPacket<C2SSendSyncingConfigPacket> {
     public static ResourceLocation location = NirvanaLibConstants.id("send_syncing_config");
     //? if ~1.21 {
-    public static final CustomPacketPayload.Type<C2SSendSyncingConfigPacket> TYPE = new CustomPacketPayload.Type<>(location);
+    /*public static final CustomPacketPayload.Type<C2SSendSyncingConfigPacket> TYPE = new CustomPacketPayload.Type<>(location);
 
     public final static StreamCodec<FriendlyByteBuf, C2SSendSyncingConfigPacket> CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC,
@@ -64,7 +64,7 @@ public class C2SSendSyncingConfigPacket implements ModPacket<C2SSendSyncingConfi
             C2SSendSyncingConfigPacket::getMap,
             C2SSendSyncingConfigPacket::new
     );
-    //?}
+    *///?}
     private UUID player;
     private Map<String, ConfigValue<?>> map;
 
@@ -78,24 +78,21 @@ public class C2SSendSyncingConfigPacket implements ModPacket<C2SSendSyncingConfi
     public C2SSendSyncingConfigPacket() {
     }
 
-
-    public static void handleServer(PacketContext<C2SSendSyncingConfigPacket> ctx) {
-
-    }
     //? if =1.20.1 {
-    /*@Override
+    @Override
     public ResourceLocation getResourceLocation() {
         return location;
     }
 
     @Override
-    public void handle(PacketContext<C2SSendSyncingConfigPacket> ctx) {
+    public void handleServer(PacketContext<C2SSendSyncingConfigPacket> ctx) {
         C2SSendSyncingConfigPacket message = ctx.message();
         PersonalConfigData data = SyncingPersonalConfig.INSTANCE.getData(message.player);
         for (Map.Entry<String, ConfigValue<?>> e : message.map.entrySet()) {
             data.configMap.merge(e.getKey(), e.getValue(), (old, newOne) -> newOne);
         }
     }
+
 
     @Override
     public void write(FriendlyByteBuf buf) {
@@ -133,16 +130,21 @@ public class C2SSendSyncingConfigPacket implements ModPacket<C2SSendSyncingConfi
         }
         this.map = map;
     }
-*///?}
+//?}
     //? if ~1.21 {
-    @Override
+    /*@Override
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
 
     @Override
-    public void handle(PacketContext<C2SSendSyncingConfigPacket> ctx) {
-        handleServer(ctx);
+    public void handleServer(PacketContext<C2SSendSyncingConfigPacket> ctx) {
+        C2SSendSyncingConfigPacket message = ctx.message();
+        PersonalConfigData data = SyncingPersonalConfig.INSTANCE.getData(message.player);
+        for (Map.Entry<String, ConfigValue<?>> e : message.map.entrySet()) {
+            data.configMap.merge(e.getKey(), e.getValue(), (old, newOne) -> newOne);
+        }
     }
-    //?}
+
+    *///?}
 }

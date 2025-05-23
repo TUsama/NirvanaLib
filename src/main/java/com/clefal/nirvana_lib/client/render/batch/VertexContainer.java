@@ -1,4 +1,4 @@
-package com.clefal.nirvana_lib.render.batch;
+package com.clefal.nirvana_lib.client.render.batch;
 
 import com.google.common.collect.HashMultimap;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -74,16 +74,16 @@ public class VertexContainer {
 
         //? if ~1.21 {
         
+        /*end.addVertex(0, 0, 0).setColor(color);
         end.addVertex(0, 0, 0).setColor(color);
         end.addVertex(0, 0, 0).setColor(color);
         end.addVertex(0, 0, 0).setColor(color);
-        end.addVertex(0, 0, 0).setColor(color);
-        //?} else {
-        /*end.vertex(0, 0, 0).color(color).endVertex();
+        *///?} else {
         end.vertex(0, 0, 0).color(color).endVertex();
         end.vertex(0, 0, 0).color(color).endVertex();
         end.vertex(0, 0, 0).color(color).endVertex();
-        *///?}
+        end.vertex(0, 0, 0).color(color).endVertex();
+        //?}
         RenderSystem.disableDepthTest();
         refresh();
     }

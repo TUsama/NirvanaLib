@@ -1,4 +1,4 @@
-package com.clefal.nirvana_lib.render.rendertype;
+package com.clefal.nirvana_lib.client.render.rendertype;
 
 import com.clefal.nirvana_lib.mixin.AccessorRenderType;
 import com.mojang.blaze3d.systems.RenderSystem;

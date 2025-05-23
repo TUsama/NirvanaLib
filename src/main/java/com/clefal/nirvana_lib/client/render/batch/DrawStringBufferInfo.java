@@ -1,4 +1,4 @@
-package com.clefal.nirvana_lib.render.batch;
+package com.clefal.nirvana_lib.client.render.batch;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
