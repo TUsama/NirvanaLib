@@ -173,6 +173,15 @@ msShadow {
     dependency("net.neoforged:bus:8.0.2", mapOf("net.neoforged.bus" to "net.neoforged.bus"))
 }
 
+
+tasks.register<Copy>("buildAndCollect") {
+    dependsOn("build")
+    group = "build"
+    from(modstitch.finalJarTask.map { it.archiveFile }.get())
+    into(rootProject.layout.buildDirectory.file("libs/${modv}"))
+}
+
+
 // All dependencies should be specified through modstitch's proxy configuration.
 // Wondering where the "repositories" block is? Go to "stonecutter.gradle.kts"
 // If you want to create proxy configurations for more source sets, such as client source sets,
@@ -230,7 +239,7 @@ dependencies {
 }
 
 msPublishing {
-
+    val finalFileTree = rootProject.layout.buildDirectory.files("libs/${modv}").asFileTree.files
 
     mpp {
         changelog = file("../../changelog.md")
@@ -245,9 +254,10 @@ msPublishing {
         type = STABLE
         //I think this is provided by modstich or stonecutter. So we can't add this otherwise the upload will fail.
         //modLoaders.add(loader)
-
-        file.set(modstitch.finalJarTask.map { it.archiveFile }.get())
+        val finalFile = finalFileTree.filter { it.name.contains(minecraft) && it.name.contains(loader) }.first()
+        file.set(finalFile)
         displayName = file.map { it.asFile.name }
+        println(displayName.get())
         //dryRun = true
         val cfOptions = curseforgeOptions {
             accessToken = file("D:\\curseforge-key.txt").readText()
