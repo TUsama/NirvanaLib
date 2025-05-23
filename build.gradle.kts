@@ -8,12 +8,11 @@ plugins {
 }
 
 fun prop(name: String, consumer: (prop: String) -> Unit) {
-    (findProperty(name) as? String?)
-        ?.let(consumer)
+    (findProperty(name) as? String?)?.let(consumer)
 }
 
 
-val modv = "1.2.1"
+val modv = "2.0.0"
 
 
 val loader = when {
@@ -65,12 +64,14 @@ modstitch {
             // You can put any other replacement properties/metadata here that
             // modstitch doesn't initially support. Some examples below.
             put("mod_issue_tracker", "https://github.com/TUsama/Loot-Beams-Refork/issues")
-            put("pformat", when (property("deps.minecraft")) {
-                "1.20.1" -> 15
-                "1.21.1" -> 34
-                "1.21.4" -> 46
-                else -> throw IllegalArgumentException("Please store the resource pack version for ${property("deps.minecraft")} in build.gradle.kts! https://minecraft.wiki/w/Pack_format")
-            }.toString())
+            put(
+                "pformat", when (property("deps.minecraft")) {
+                    "1.20.1" -> 15
+                    "1.21.1" -> 34
+                    "1.21.4" -> 46
+                    else -> throw IllegalArgumentException("Please store the resource pack version for ${property("deps.minecraft")} in build.gradle.kts! https://minecraft.wiki/w/Pack_format")
+                }.toString()
+            )
 
             put("target_minecraft", minecraft)
             //put("target_lib", property("deps.lib") as String)
@@ -81,10 +82,12 @@ modstitch {
                 }
             )
             put("loader", loader)
-            put("target_fabricloader", when (loader) {
-                "fabric" -> property("deps.fabric_loader") as String
-                else -> ""
-            })
+            put(
+                "target_fabricloader", when (loader) {
+                    "fabric" -> property("deps.fabric_loader") as String
+                    else -> ""
+                }
+            )
             put("fzzy_config_version", property("deps.fzzy_config_version") as String)
             put("common_networking_version", property("deps.common_networking_ingame_version") as String)
         }
@@ -95,7 +98,7 @@ modstitch {
         // It's not recommended to store the Fabric Loader version in properties.
         // Make sure its up to date.
         fabricLoaderVersion = "0.16.10"
-        configureLoom{
+        configureLoom {
             runs {
                 all {
                     runDir = "../../run"
@@ -143,9 +146,9 @@ modstitch {
         // if (isModDevGradleLegacy) configs.register("examplemod-forge")
     }
 }
-base{
+base {
     val meta = modstitch.metadata
-    archivesName = "${meta.modName.get()}-${loader}"
+    archivesName = "${meta.modName.get()}-${loader}-${minecraft}"
 }
 
 // Stonecutter constants for mod loaders.
@@ -164,7 +167,7 @@ tasks.named<Copy>("processResources") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
-msShadow{
+msShadow {
     relocatePackage.set("${modstitch.metadata.modGroup.get()}.${modstitch.metadata.modId.get()}.relocated")
     dependency("io.vavr:vavr:0.10.6", mapOf("io.vavr" to "io.vavr"))
     dependency("net.neoforged:bus:8.0.2", mapOf("net.neoforged.bus" to "net.neoforged.bus"))
@@ -195,10 +198,10 @@ dependencies {
     modstitch.loom {
         val fabricApi = property("deps.fabric_api") as String
         modstitchModImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApi}+${minecraft}")
-        modstitchModApi ("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}")
+        modstitchModApi("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}")
     }
 
-    modstitch.moddevgradle{
+    modstitch.moddevgradle {
         if (modstitch.isModDevGradleLegacy) {
             modstitchModApi(("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+forge"))
         } else {
@@ -208,29 +211,28 @@ dependencies {
 
 
     //loader-specified deps
-    DependencyConfig.getDependencies(loader, minecraft).forEach{ dep ->
+    DependencyConfig.getDependencies(loader, minecraft).forEach { dep ->
         dependencies.add(dep.configuration, dep.notation, dep.options)
     }
     //lombok
-    modstitchCompileOnly ("org.projectlombok:lombok:1.18.34")
-    annotationProcessor ("org.projectlombok:lombok:1.18.34")
+    modstitchCompileOnly("org.projectlombok:lombok:1.18.34")
+    annotationProcessor("org.projectlombok:lombok:1.18.34")
 
-    testCompileOnly ("org.projectlombok:lombok:1.18.34")
-    testAnnotationProcessor ("org.projectlombok:lombok:1.18.34")
+    testCompileOnly("org.projectlombok:lombok:1.18.34")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.34")
 
     //shadow dep
     modstitchImplementation("io.vavr:vavr:0.10.6")
     modstitchImplementation("net.neoforged:bus:8.0.2")
 
 
-
     // Anything else in the dependencies block will be used for all platforms.
 }
 
-msPublishing{
+msPublishing {
 
 
-    mpp{
+    mpp {
         changelog = file("../../changelog.md")
             .readLines()
             .joinToString("\n") { line ->
@@ -241,12 +243,12 @@ msPublishing{
                 }
             }
         type = STABLE
-        modLoaders.add(loader)
+        //I think this is provided by modstich or stonecutter. So we can't add this otherwise the upload will fail.
+        //modLoaders.add(loader)
 
         file.set(modstitch.finalJarTask.map { it.archiveFile }.get())
         displayName = file.map { it.asFile.name }
-        dryRun = true
-        // CurseForge options used by both Fabric and Forge
+        //dryRun = true
         val cfOptions = curseforgeOptions {
             accessToken = file("D:\\curseforge-key.txt").readText()
             projectId = "1164411"
@@ -257,20 +259,21 @@ msPublishing{
         // Modrinth options used by both Fabric and Forge
         val mrOptions = modrinthOptions {
             accessToken = file("D:\\modrinth-key.txt").readText()
-            version="${loader}-${modstitch.metadata.modVersion.get()}"
+            version = "${loader}-${modstitch.metadata.modVersion.get()}"
             projectId = "6gKEW2ql"
             minecraftVersions.add(minecraft)
             requires("fzzy-config", "common-network")
         }
 
         curseforge("toCurseForge") {
-            from (cfOptions)
+            from(cfOptions)
         }
 
 
         modrinth("toModrinth") {
-            from (mrOptions)
+            from(mrOptions)
         }
+
 
     }
 
