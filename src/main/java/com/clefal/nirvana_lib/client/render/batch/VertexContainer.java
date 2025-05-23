@@ -74,16 +74,16 @@ public class VertexContainer {
 
         //? if ~1.21 {
         
-        /*end.addVertex(0, 0, 0).setColor(color);
         end.addVertex(0, 0, 0).setColor(color);
         end.addVertex(0, 0, 0).setColor(color);
         end.addVertex(0, 0, 0).setColor(color);
-        *///?} else {
+        end.addVertex(0, 0, 0).setColor(color);
+        //?} else {
+        /*end.vertex(0, 0, 0).color(color).endVertex();
         end.vertex(0, 0, 0).color(color).endVertex();
         end.vertex(0, 0, 0).color(color).endVertex();
         end.vertex(0, 0, 0).color(color).endVertex();
-        end.vertex(0, 0, 0).color(color).endVertex();
-        //?}
+        *///?}
         RenderSystem.disableDepthTest();
         refresh();
     }

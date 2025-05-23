@@ -14,15 +14,15 @@ public record FillBufferInfo(float minX, float minY, float maxX, float maxY, flo
     @Override
     public void upload(VertexConsumer consumer) {
         //? if ~1.21 {
-        /*consumer.addVertex(matrix4f, minX, minY, z).setColor(packedColor);
+        consumer.addVertex(matrix4f, minX, minY, z).setColor(packedColor);
         consumer.addVertex(matrix4f, minX, maxY, z).setColor(packedColor);
         consumer.addVertex(matrix4f, maxX, maxY, z).setColor(packedColor);
         consumer.addVertex(matrix4f, maxX, minY, z).setColor(packedColor);
-        *///?} else {
-        consumer.vertex(matrix4f, minX, minY, z).color(packedColor).endVertex();
+        //?} else {
+        /*consumer.vertex(matrix4f, minX, minY, z).color(packedColor).endVertex();
         consumer.vertex(matrix4f, minX, maxY, z).color(packedColor).endVertex();
         consumer.vertex(matrix4f, maxX, maxY, z).color(packedColor).endVertex();
         consumer.vertex(matrix4f, maxX, minY, z).color(packedColor).endVertex();
-        //?}
+        *///?}
     }
 }

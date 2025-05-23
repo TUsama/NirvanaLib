@@ -9,17 +9,17 @@ import com.clefal.nirvana_lib.NirvanaLibConstants;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 //? if ~1.21 {
-/*import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-*///?}
+//?}
 import java.util.*;
 
 @Getter
 public class C2SSendSyncingConfigPacket implements C2SModPacket<C2SSendSyncingConfigPacket> {
     public static ResourceLocation location = NirvanaLibConstants.id("send_syncing_config");
     //? if ~1.21 {
-    /*public static final CustomPacketPayload.Type<C2SSendSyncingConfigPacket> TYPE = new CustomPacketPayload.Type<>(location);
+    public static final CustomPacketPayload.Type<C2SSendSyncingConfigPacket> TYPE = new CustomPacketPayload.Type<>(location);
 
     public final static StreamCodec<FriendlyByteBuf, C2SSendSyncingConfigPacket> CODEC = StreamCodec.composite(
             UUIDUtil.STREAM_CODEC,
@@ -64,7 +64,7 @@ public class C2SSendSyncingConfigPacket implements C2SModPacket<C2SSendSyncingCo
             C2SSendSyncingConfigPacket::getMap,
             C2SSendSyncingConfigPacket::new
     );
-    *///?}
+    //?}
     private UUID player;
     private Map<String, ConfigValue<?>> map;
 
@@ -79,7 +79,7 @@ public class C2SSendSyncingConfigPacket implements C2SModPacket<C2SSendSyncingCo
     }
 
     //? if =1.20.1 {
-    @Override
+    /*@Override
     public ResourceLocation getResourceLocation() {
         return location;
     }
@@ -130,9 +130,9 @@ public class C2SSendSyncingConfigPacket implements C2SModPacket<C2SSendSyncingCo
         }
         this.map = map;
     }
-//?}
+*///?}
     //? if ~1.21 {
-    /*@Override
+    @Override
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
     }
@@ -146,5 +146,5 @@ public class C2SSendSyncingConfigPacket implements C2SModPacket<C2SSendSyncingCo
         }
     }
 
-    *///?}
+    //?}
 }

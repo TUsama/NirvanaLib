@@ -1,5 +1,5 @@
 //? if forge {
-package com.clefal.nirvana_lib.loaders.forge;
+/*package com.clefal.nirvana_lib.loaders.forge;
 
 import com.mojang.logging.LogUtils;
 import com.clefal.nirvana_lib.NirvanaLibCommon;
@@ -17,4 +17,4 @@ public class ForgeEntrypoint {
     }
 
 }
-//?}
+*///?}

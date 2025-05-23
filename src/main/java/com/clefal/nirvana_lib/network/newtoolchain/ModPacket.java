@@ -5,14 +5,14 @@ import net.minecraft.resources.ResourceLocation;
 
 //? if ~1.21 {
 
-/*import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
 public interface ModPacket<MSG> extends CustomPacketPayload {
     void handle(PacketContext<MSG> ctx);
 }
 
-*///?} elif = 1.20.1 {
-public interface ModPacket<MSG>{
+//?} elif = 1.20.1 {
+/*public interface ModPacket<MSG>{
 
     ResourceLocation getResourceLocation();
     void handle(PacketContext<MSG> ctx);
@@ -20,5 +20,5 @@ public interface ModPacket<MSG>{
     void read(FriendlyByteBuf buf);
 }
 
-//?}
+*///?}
 

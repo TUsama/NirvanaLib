@@ -9,12 +9,12 @@ import commonnetwork.api.Network;
 import lombok.experimental.UtilityClass;
 import com.clefal.nirvana_lib.network.newtoolchain.ModPacket;
 //? if ~1.21 {
-/*import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-*///?}
+//?}
 //? if =1.20.1 {
-import java.util.function.Function;
+/*import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -22,7 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import com.clefal.nirvana_lib.network.C2SModPacket;
 import com.clefal.nirvana_lib.network.S2CModPacket;
-//?}
+*///?}
 
 import net.minecraft.server.level.ServerPlayer;
 
@@ -44,7 +44,7 @@ public class NetworkUtils {
 
     //? if =1.20.1 {
 
-    @Deprecated(forRemoval = true)
+    /*@Deprecated(forRemoval = true)
     public void sendToClient(S2CModPacket msg, ServerPlayer player){
         Dispatcher.sendToClient(msg, player);
     }
@@ -80,13 +80,13 @@ public class NetworkUtils {
         String[] split = clas.toString().split("\\.");
         return NirvanaLibConstants.id(split[split.length - 1].replace("$", "").toLowerCase());
     }
-//?}
+*///?}
 
 
     //? if ~1.21 {
-    /*public <MSG extends ModPacket> void registerPacket(CustomPacketPayload.Type<? extends CustomPacketPayload> type, Class<MSG> packetClass, StreamCodec<? extends FriendlyByteBuf, MSG> codec){
+    public <MSG extends ModPacket> void registerPacket(CustomPacketPayload.Type<? extends CustomPacketPayload> type, Class<MSG> packetClass, StreamCodec<? extends FriendlyByteBuf, MSG> codec){
         Network.registerPacket(type, packetClass, codec, x -> x.message().handle(x));
     }
-*///?}
+//?}
 
 }
