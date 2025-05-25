@@ -1,2 +1,5 @@
+### 2.0.2
+try to fix invalid RL bug
+
 ### 2.0.0
 multiversion update, this update will potentially bring bugs to existing mod. If you experiment with any crashes, you can report it to the GitHub and downgrade this mod.
