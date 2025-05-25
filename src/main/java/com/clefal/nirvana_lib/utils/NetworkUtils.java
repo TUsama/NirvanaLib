@@ -22,11 +22,12 @@ import net.minecraft.resources.ResourceLocation;
 
 import com.clefal.nirvana_lib.network.C2SModPacket;
 import com.clefal.nirvana_lib.network.S2CModPacket;
+import static net.minecraft.resources.ResourceLocation.isAllowedInResourceLocation;
 *///?}
 
 import net.minecraft.server.level.ServerPlayer;
 
-import static net.minecraft.resources.ResourceLocation.validPathChar;
+
 
 
 @UtilityClass
@@ -47,19 +48,22 @@ public class NetworkUtils {
     //? if =1.20.1 {
 
     /*@Deprecated(forRemoval = true)
-    public void sendToClient(S2CModPacket msg, ServerPlayer player){
+    public void sendToClient(S2CModPacket msg, ServerPlayer player) {
         Dispatcher.sendToClient(msg, player);
     }
+
     @Deprecated(forRemoval = true)
-    public void  sendToClients(S2CModPacket msg, Iterable<ServerPlayer> playerList){
+    public void sendToClients(S2CModPacket msg, Iterable<ServerPlayer> playerList) {
         for (ServerPlayer serverPlayer : playerList) {
-           sendToClient(msg, serverPlayer);
+            sendToClient(msg, serverPlayer);
         }
     }
+
     @Deprecated(forRemoval = true)
-    public void sendToServer(C2SModPacket msg){
+    public void sendToServer(C2SModPacket msg) {
         Dispatcher.sendToServer(msg);
     }
+
     public <MSG extends ModPacket<MSG>> void registerPacket(ResourceLocation packetIdentifier, Class<MSG> messageType, Supplier<MSG> supplier) {
         Network.registerPacket(packetIdentifier, messageType, (ModPacket::write), buf -> {
             MSG msg = supplier.get();
@@ -78,17 +82,16 @@ public class NetworkUtils {
         Network.registerPacket(classToResourceLocation(packetClass), packetClass, MSG::write, reader, x -> x.message().handleClient());
     }
 
-    private static ResourceLocation classToResourceLocation(Class<?> clas){
+    private static ResourceLocation classToResourceLocation(Class<?> clas) {
         String name = clas.getSimpleName();
-        String result = name;
-        if (!ResourceLocation.isValidPath(name)){
-            result = name.chars()
-                    .filter(x -> !validPathChar(name.charAt(x)))
-                    .boxed()
-                    .map(name::charAt)
-                    .collect(StringBuilder::new, (StringBuilder::append), StringBuilder::append).toString();
+        String result;
+        result = name.chars()
+                .filter(x -> !isAllowedInResourceLocation(name.charAt(x)))
+                .boxed()
+                .map(name::charAt)
+                .collect(StringBuilder::new, (StringBuilder::append), StringBuilder::append).toString();
 
-        }
+
         return NirvanaLibConstants.id(result.toLowerCase());
     }
 *///?}
