@@ -12,7 +12,7 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
 }
 
 
-val modv = "2.0.0"
+val modv = "2.0.1"
 
 
 val loader = when {
@@ -254,10 +254,9 @@ msPublishing {
         type = STABLE
         //I think this is provided by modstich or stonecutter. So we can't add this otherwise the upload will fail.
         //modLoaders.add(loader)
-        val finalFile = finalFileTree.filter { it.name.contains(minecraft) && it.name.contains(loader) }.first()
-        file.set(finalFile)
+        val finalFile = finalFileTree.filter { it.name.contains(minecraft) && it.name.contains(loader) }
+        file.set(finalFile.firstOrNull())
         displayName = file.map { it.asFile.name }
-        println(displayName.get())
         //dryRun = true
         val cfOptions = curseforgeOptions {
             accessToken = file("D:\\curseforge-key.txt").readText()
@@ -269,7 +268,7 @@ msPublishing {
         // Modrinth options used by both Fabric and Forge
         val mrOptions = modrinthOptions {
             accessToken = file("D:\\modrinth-key.txt").readText()
-            version = "${loader}-${modstitch.metadata.modVersion.get()}"
+            version = "${loader}-${minecraft}-${modstitch.metadata.modVersion.get()}"
             projectId = "6gKEW2ql"
             minecraftVersions.add(minecraft)
             requires("fzzy-config", "common-network")

@@ -26,6 +26,8 @@ import com.clefal.nirvana_lib.network.S2CModPacket;
 
 import net.minecraft.server.level.ServerPlayer;
 
+import static net.minecraft.resources.ResourceLocation.validPathChar;
+
 
 @UtilityClass
 public class NetworkUtils {
@@ -77,8 +79,17 @@ public class NetworkUtils {
     }
 
     private static ResourceLocation classToResourceLocation(Class<?> clas){
-        String[] split = clas.toString().split("\\.");
-        return NirvanaLibConstants.id(split[split.length - 1].replace("$", "").toLowerCase());
+        String name = clas.getSimpleName();
+        String result = name;
+        if (!ResourceLocation.isValidPath(name)){
+            result = name.chars()
+                    .filter(x -> !validPathChar(name.charAt(x)))
+                    .boxed()
+                    .map(name::charAt)
+                    .collect(StringBuilder::new, (StringBuilder::append), StringBuilder::append).toString();
+
+        }
+        return NirvanaLibConstants.id(result.toLowerCase());
     }
 *///?}
 
