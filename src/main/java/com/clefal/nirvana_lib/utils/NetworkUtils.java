@@ -6,6 +6,7 @@ import com.clefal.nirvana_lib.NirvanaLibConstants;
 import com.clefal.nirvana_lib.platform.Services;
 import commonnetwork.api.Dispatcher;
 import commonnetwork.api.Network;
+import io.vavr.collection.Array;
 import lombok.experimental.UtilityClass;
 import com.clefal.nirvana_lib.network.newtoolchain.ModPacket;
 //? if ~1.21 {
@@ -14,7 +15,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 //?}
 //? if =1.20.1 {
-/*import java.util.function.Function;
+/*import java.util.ArrayList;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -85,14 +87,20 @@ public class NetworkUtils {
     private static ResourceLocation classToResourceLocation(Class<?> clas) {
         String name = clas.getSimpleName();
         String result;
-        result = name.chars()
-                .filter(x -> !isAllowedInResourceLocation(name.charAt(x)))
-                .boxed()
-                .map(name::charAt)
+        ArrayList<Character> characters = new ArrayList<>();
+        for (char c : name.toCharArray()) {
+            characters.add(c);
+        }
+        result = characters.stream()
+                .filter(NetworkUtils::validPathChar)
                 .collect(StringBuilder::new, (StringBuilder::append), StringBuilder::append).toString();
 
 
         return NirvanaLibConstants.id(result.toLowerCase());
+    }
+
+    public static boolean validPathChar(char pathChar) {
+        return pathChar == '_' || pathChar == '-' || pathChar >= 'a' && pathChar <= 'z' || pathChar >= '0' && pathChar <= '9' || pathChar == '/' || pathChar == '.';
     }
 *///?}
 

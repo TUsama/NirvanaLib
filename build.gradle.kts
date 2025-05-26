@@ -12,7 +12,7 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
 }
 
 
-val modv = "2.0.2"
+val modv = "2.0.3"
 
 
 val loader = when {
@@ -187,6 +187,13 @@ tasks.register<Copy>("buildAndCollect") {
 // If you want to create proxy configurations for more source sets, such as client source sets,
 // use the modstitch.createProxyConfigurations(sourceSets["client"]) function.
 dependencies {
+    "com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.2-beta.4".let {
+        annotationProcessor(it)
+        modstitchCompileOnly(it)
+        modstitchImplementation(it)
+        modstitchJiJ(it)
+    }
+
     val loader = when {
         modstitch.isLoom -> Loaders.LOOM
         modstitch.isModDevGradleLegacy -> Loaders.FORGE
