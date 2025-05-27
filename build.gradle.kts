@@ -128,10 +128,14 @@ modstitch {
             validateAccessTransformers = false
             runs.all {
                 disableIdeRun()
-                gameDirectory = file("../../run")
+                //if (modstitch.isModDevGradleRegular) gameDirectory = file("../../run")
+                println("gameD is " + gameDirectory.asFileTree.asPath)
             }
         }
+
     }
+
+
 
     mixin {
         // You do not need to specify mixins in any mods.json/toml file if this is set to
@@ -187,12 +191,6 @@ tasks.register<Copy>("buildAndCollect") {
 // If you want to create proxy configurations for more source sets, such as client source sets,
 // use the modstitch.createProxyConfigurations(sourceSets["client"]) function.
 dependencies {
-    "com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.2-beta.4".let {
-        annotationProcessor(it)
-        modstitchCompileOnly(it)
-        modstitchImplementation(it)
-        modstitchJiJ(it)
-    }
 
     val loader = when {
         modstitch.isLoom -> Loaders.LOOM
@@ -214,14 +212,15 @@ dependencies {
     modstitch.loom {
         val fabricApi = property("deps.fabric_api") as String
         modstitchModImplementation("net.fabricmc.fabric-api:fabric-api:${fabricApi}+${minecraft}")
-        modstitchModApi("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}")
+        modstitchModImplementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}")
+
     }
 
     modstitch.moddevgradle {
         if (modstitch.isModDevGradleLegacy) {
-            modstitchModApi(("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+forge"))
+            modstitchModImplementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+forge")
         } else {
-            modstitchModApi(("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+neoforge"))
+            modstitchModImplementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+neoforge")
         }
     }
 
