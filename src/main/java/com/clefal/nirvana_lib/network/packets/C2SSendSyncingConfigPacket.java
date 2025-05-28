@@ -2,16 +2,17 @@ package com.clefal.nirvana_lib.network.packets;
 
 import com.clefal.nirvana_lib.config.*;
 import com.clefal.nirvana_lib.network.newtoolchain.C2SModPacket;
-import commonnetwork.networking.data.PacketContext;
 import lombok.Getter;
 import com.clefal.nirvana_lib.NirvanaLibConstants;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 //? if ~1.21 {
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerPlayer;
 //?}
 import java.util.*;
 
@@ -79,14 +80,9 @@ public class C2SSendSyncingConfigPacket implements C2SModPacket<C2SSendSyncingCo
     }
 
     //? if =1.20.1 {
-    /*@Override
-    public ResourceLocation getResourceLocation() {
-        return location;
-    }
 
-    @Override
-    public void handleServer(PacketContext<C2SSendSyncingConfigPacket> ctx) {
-        C2SSendSyncingConfigPacket message = ctx.message();
+    /*@Override
+    public void handleServer(ServerPlayer sender, C2SSendSyncingConfigPacket message, boolean isClient) {
         PersonalConfigData data = SyncingPersonalConfig.INSTANCE.getData(message.player);
         for (Map.Entry<String, ConfigValue<?>> e : message.map.entrySet()) {
             data.configMap.merge(e.getKey(), e.getValue(), (old, newOne) -> newOne);
@@ -138,13 +134,13 @@ public class C2SSendSyncingConfigPacket implements C2SModPacket<C2SSendSyncingCo
     }
 
     @Override
-    public void handleServer(PacketContext<C2SSendSyncingConfigPacket> ctx) {
-        C2SSendSyncingConfigPacket message = ctx.message();
+    public void handleServer(ServerPlayer sender, C2SSendSyncingConfigPacket message, boolean isClient) {
         PersonalConfigData data = SyncingPersonalConfig.INSTANCE.getData(message.player);
         for (Map.Entry<String, ConfigValue<?>> e : message.map.entrySet()) {
             data.configMap.merge(e.getKey(), e.getValue(), (old, newOne) -> newOne);
         }
     }
+
 
     //?}
 }

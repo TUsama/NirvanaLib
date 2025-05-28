@@ -1,3 +1,6 @@
+### 2.0.4
+internal network system improves
+
 ### 2.0.3
 fix invalid RL bug this time
 

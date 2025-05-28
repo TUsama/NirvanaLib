@@ -12,7 +12,7 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
 }
 
 
-val modv = "2.0.3"
+val modv = "2.0.4"
 
 
 val loader = when {

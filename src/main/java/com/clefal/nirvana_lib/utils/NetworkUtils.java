@@ -66,8 +66,8 @@ public class NetworkUtils {
         Dispatcher.sendToServer(msg);
     }
 
-    public <MSG extends ModPacket<MSG>> void registerPacket(ResourceLocation packetIdentifier, Class<MSG> messageType, Supplier<MSG> supplier) {
-        Network.registerPacket(packetIdentifier, messageType, (ModPacket::write), buf -> {
+    public <MSG extends ModPacket<MSG>> void registerPacket(Class<MSG> messageType, Supplier<MSG> supplier) {
+        Network.registerPacket(classToResourceLocation(messageType), messageType, (ModPacket::write), buf -> {
             MSG msg = supplier.get();
             msg.read(buf);
             return msg;

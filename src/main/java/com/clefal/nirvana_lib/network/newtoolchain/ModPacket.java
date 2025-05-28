@@ -14,7 +14,6 @@ public interface ModPacket<MSG> extends CustomPacketPayload {
 //?} elif = 1.20.1 {
 /*public interface ModPacket<MSG>{
 
-    ResourceLocation getResourceLocation();
     void handle(PacketContext<MSG> ctx);
     void write(FriendlyByteBuf buf);
     void read(FriendlyByteBuf buf);
