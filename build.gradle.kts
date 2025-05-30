@@ -206,7 +206,9 @@ dependencies {
         else -> minecraft
     }
 
-    modstitchModImplementation("maven.modrinth:common-network:${property("deps.common_network")}")
+    modstitchModImplementation("maven.modrinth:common-network:${property("deps.common_network")}"){
+        isTransitive = false
+    }
 
     //fzzy
     modstitch.loom {
@@ -217,13 +219,14 @@ dependencies {
     }
 
     modstitch.moddevgradle {
-        if (modstitch.isModDevGradleLegacy) {
+        if (modstitch.isModDevGradleLegacy){
             modstitchModImplementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+forge")
+            add("modstitchMdgRemap", "me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+forge")
         } else {
             modstitchModImplementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+neoforge")
         }
-    }
 
+    }
 
     //loader-specified deps
     DependencyConfig.getDependencies(loader, minecraft).forEach { dep ->
