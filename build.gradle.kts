@@ -2,9 +2,9 @@ import deps.DependencyConfig
 import deps.Loaders
 
 plugins {
-    id("dev.isxander.modstitch.base") version "0.5.12"
-    id("dev.isxander.modstitch.shadow") version "0.5.12"
-    id("dev.isxander.modstitch.publishing") version "0.5.12"
+    id("dev.isxander.modstitch.base") version "0.5.+"
+    id("dev.isxander.modstitch.shadow") version "0.5.+"
+    id("dev.isxander.modstitch.publishing") version "0.5.+"
 }
 
 fun prop(name: String, consumer: (prop: String) -> Unit) {
@@ -12,8 +12,8 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
 }
 
 
-val modv = "2.0.4"
-
+val modv = "2.0.5"
+val mid = "nirvana_lib"
 
 val loader = when {
     modstitch.isLoom -> "fabric"
@@ -47,7 +47,7 @@ modstitch {
 
     // This metadata is used to fill out the information inside
     // the metadata files found in the templates folder.
-    val mid = "nirvana_lib"
+
     metadata {
         modId = mid
         modName = "Nirvana Lib"
@@ -106,6 +106,8 @@ modstitch {
                 }
                 accessWidenerPath.set(file("../../src/main/resources/${mid}.accesswidener"))
             }
+            mixin.useLegacyMixinAp = false
+
         }
     }
 
@@ -129,9 +131,11 @@ modstitch {
             runs.all {
                 disableIdeRun()
                 //if (modstitch.isModDevGradleRegular) gameDirectory = file("../../run")
-                println("gameD is " + gameDirectory.asFileTree.asPath)
+                //println("gameD is " + gameDirectory.asFileTree.asPath)
             }
+
         }
+
 
     }
 
@@ -170,13 +174,13 @@ stonecutter {
 tasks.named<Copy>("processResources") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-
+/*
 msShadow {
     relocatePackage.set("${modstitch.metadata.modGroup.get()}.${modstitch.metadata.modId.get()}.relocated")
     dependency("io.vavr:vavr:0.10.6", mapOf("io.vavr" to "io.vavr"))
     dependency("net.neoforged:bus:8.0.2", mapOf("net.neoforged.bus" to "net.neoforged.bus"))
 }
-
+*/
 
 tasks.register<Copy>("buildAndCollect") {
     dependsOn("build")
