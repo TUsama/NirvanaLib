@@ -174,13 +174,13 @@ stonecutter {
 tasks.named<Copy>("processResources") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-/*
+
 msShadow {
     relocatePackage.set("${modstitch.metadata.modGroup.get()}.${modstitch.metadata.modId.get()}.relocated")
     dependency("io.vavr:vavr:0.10.6", mapOf("io.vavr" to "io.vavr"))
     dependency("net.neoforged:bus:8.0.2", mapOf("net.neoforged.bus" to "net.neoforged.bus"))
 }
-*/
+
 
 tasks.register<Copy>("buildAndCollect") {
     dependsOn("build")

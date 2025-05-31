@@ -1,3 +1,6 @@
+### 2.0.5
+prob fix a bug that causes the advanced team mod can't render bar properly
+
 ### 2.0.4
 internal network system improves
 
