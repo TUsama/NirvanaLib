@@ -85,7 +85,7 @@ public class NetworkUtils {
     }
 
     private static ResourceLocation classToResourceLocation(Class<?> clas) {
-        String name = clas.getSimpleName();
+        String name = clas.getSimpleName().toLowerCase();
         String result;
         ArrayList<Character> characters = new ArrayList<>();
         for (char c : name.toCharArray()) {
