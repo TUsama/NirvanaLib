@@ -2,9 +2,9 @@ import deps.DependencyConfig
 import deps.Loaders
 
 plugins {
-    id("dev.isxander.modstitch.base") version "0.5.+"
-    id("dev.isxander.modstitch.shadow") version "0.5.+"
-    id("dev.isxander.modstitch.publishing") version "0.5.+"
+    id("dev.isxander.modstitch.base") version "clefal-version"
+    id("dev.isxander.modstitch.shadow") version "clefal-version"
+    id("dev.isxander.modstitch.publishing") version "clefal-version"
 }
 
 fun prop(name: String, consumer: (prop: String) -> Unit) {
@@ -12,7 +12,7 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
 }
 
 
-val modv = "2.0.5"
+val modv = "2.0.8"
 val mid = "nirvana_lib"
 
 val loader = when {
@@ -147,6 +147,7 @@ modstitch {
         addMixinsToModManifest = true
         configs.register(mid)
 
+
         // Most of the time you wont ever need loader specific mixins.
         // If you do, simply make the mixin file and add it like so for the respective loader:
         // if (isLoom) configs.register("examplemod-fabric")
@@ -174,11 +175,25 @@ stonecutter {
 tasks.named<Copy>("processResources") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-
+/*
+configurations.named("modstitchShadow"){
+    isTransitive = false
+    isCanBeConsumed = true
+}
+*/
 msShadow {
     relocatePackage.set("${modstitch.metadata.modGroup.get()}.${modstitch.metadata.modId.get()}.relocated")
-    dependency("io.vavr:vavr:0.10.6", mapOf("io.vavr" to "io.vavr"))
-    dependency("net.neoforged:bus:8.0.2", mapOf("net.neoforged.bus" to "net.neoforged.bus"))
+    dependency("io.vavr:vavr:0.10.6", mapOf("io.vavr" to "io.vavr")){
+        exclude("META-INF/")
+    }
+    dependency("net.neoforged:bus:8.0.2", mapOf("net.neoforged.bus" to "net.neoforged.bus")){
+        exclude("org.ow2.asm")
+
+        exclude("net.jodah")
+        exclude("org.apache.logging.log4j")
+        exclude("cpw.mods", "modlauncher")
+    }
+    dependency("net.jodah:typetools:0.6.3", mapOf("net.jodah" to "net.jodah"))
 }
 
 

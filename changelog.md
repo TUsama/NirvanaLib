@@ -1,3 +1,6 @@
+### 2.0.8
+(only 1.20.1 Forge)fix a bug that refmap can't be packed into the jar, resulting RenderType creation fail.
+
 ### 2.0.5
 prob fix a bug that causes the advanced team mod can't render bar properly
 

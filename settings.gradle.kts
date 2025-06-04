@@ -48,4 +48,4 @@ stonecutter {
 }
 
 rootProject.name = "NirvanaLib"
-
+includeBuild("modstitch")
