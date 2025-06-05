@@ -240,7 +240,6 @@ dependencies {
     modstitch.moddevgradle {
         if (modstitch.isModDevGradleLegacy){
             modstitchModImplementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+forge")
-            add("modstitchMdgRemap", "me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+forge")
         } else {
             modstitchModImplementation("me.fzzyhmstrs:fzzy_config:${fzzyConfigVersion}+${fzzyMinecraftVersion}+neoforge")
         }
