@@ -88,6 +88,10 @@ modstitch {
                     else -> ""
                 }
             )
+            findProperty("deps.forge")?.let {
+                put("target_forge", it as String)
+            }
+
             put("fzzy_config_version", property("deps.fzzy_config_version") as String)
             put("common_networking_version", property("deps.common_networking_ingame_version") as String)
         }
