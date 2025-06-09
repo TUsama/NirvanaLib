@@ -12,7 +12,7 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
 }
 
 
-val modv = "2.0.8"
+val modv = "2.0.9"
 val mid = "nirvana_lib"
 
 val loader = when {
@@ -88,8 +88,12 @@ modstitch {
                     else -> ""
                 }
             )
+            put("target_forge", when(findProperty("deps.forge") != null){
+                true -> property("deps.forge")
+                false -> ""
+            } as String)
             findProperty("deps.forge")?.let {
-                put("target_forge", it as String)
+
             }
 
             put("fzzy_config_version", property("deps.fzzy_config_version") as String)
