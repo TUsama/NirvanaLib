@@ -8,64 +8,10 @@ import com.clefal.nirvana_lib.NirvanaLibConstants;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-//? if ~1.21 {
-import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.core.UUIDUtil;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.server.level.ServerPlayer;
-//?}
 import java.util.*;
 
 @Getter
 public class C2SSendSyncingConfigPacket implements C2SModPacket<C2SSendSyncingConfigPacket> {
-    public static ResourceLocation location = NirvanaLibConstants.id("send_syncing_config");
-    //? if ~1.21 {
-    public static final CustomPacketPayload.Type<C2SSendSyncingConfigPacket> TYPE = new CustomPacketPayload.Type<>(location);
-
-    public final static StreamCodec<FriendlyByteBuf, C2SSendSyncingConfigPacket> CODEC = StreamCodec.composite(
-            UUIDUtil.STREAM_CODEC,
-            C2SSendSyncingConfigPacket::getPlayer,
-            new StreamCodec<>() {
-                @Override
-                public void encode(FriendlyByteBuf o, Map<String, ConfigValue<?>> stringConfigValueMap) {
-                    var tokens = new ArrayList<Byte>();
-                    for (Map.Entry<String, ConfigValue<?>> e : stringConfigValueMap.entrySet()) {
-                        tokens.add(e.getValue().getToken());
-                    }
-                    o.writeCollection(tokens, (buf1, aByte) -> buf1.writeByte(aByte));
-
-                    for (Map.Entry<String, ConfigValue<?>> e : stringConfigValueMap.entrySet()) {
-                        o.writeUtf(e.getKey());
-                        e.getValue().write(o);
-                    }
-                }
-
-                @Override
-                public Map<String, ConfigValue<?>> decode(FriendlyByteBuf byteBuf) {
-                    List<Byte> bytes = byteBuf.readList(FriendlyByteBuf::readByte);
-
-                    Map<String, ConfigValue<?>> map = new LinkedHashMap<>();
-
-                    for (Byte token : bytes) {
-                        String key = byteBuf.readUtf();
-                        ConfigValue<?> value = null;
-                        switch (token) {
-                            case 0 -> value = new BooleanValue(byteBuf.readBoolean());
-                            case 1 -> value = new IntegerValue(((Byte) byteBuf.readByte()).intValue());
-                            case 2 ->
-                                    value = new StringListValue(byteBuf.readCollection(ArrayList::new, FriendlyByteBuf::readUtf));
-                        }
-                        if (value == null) throw new RuntimeException("invalidated token: " + token);
-                        map.put(key, value);
-                    }
-
-                    return map;
-                }
-            },
-            C2SSendSyncingConfigPacket::getMap,
-            C2SSendSyncingConfigPacket::new
-    );
-    //?}
     private UUID player;
     private Map<String, ConfigValue<?>> map;
 
@@ -79,9 +25,9 @@ public class C2SSendSyncingConfigPacket implements C2SModPacket<C2SSendSyncingCo
     public C2SSendSyncingConfigPacket() {
     }
 
-    //? if =1.20.1 {
 
-    /*@Override
+
+    @Override
     public void handleServer(ServerPlayer sender, C2SSendSyncingConfigPacket message, boolean isClient) {
         PersonalConfigData data = SyncingPersonalConfig.INSTANCE.getData(message.player);
         for (Map.Entry<String, ConfigValue<?>> e : message.map.entrySet()) {
@@ -126,21 +72,11 @@ public class C2SSendSyncingConfigPacket implements C2SModPacket<C2SSendSyncingCo
         }
         this.map = map;
     }
-*///?}
-    //? if ~1.21 {
-    @Override
-    public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
-    }
 
     @Override
-    public void handleServer(ServerPlayer sender, C2SSendSyncingConfigPacket message, boolean isClient) {
-        PersonalConfigData data = SyncingPersonalConfig.INSTANCE.getData(message.player);
-        for (Map.Entry<String, ConfigValue<?>> e : message.map.entrySet()) {
-            data.configMap.merge(e.getKey(), e.getValue(), (old, newOne) -> newOne);
-        }
+    public Class<C2SSendSyncingConfigPacket> getSelfClass() {
+        return C2SSendSyncingConfigPacket.class;
     }
 
 
-    //?}
 }
