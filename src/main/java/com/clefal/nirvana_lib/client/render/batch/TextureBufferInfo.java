@@ -47,15 +47,15 @@ public record TextureBufferInfo(float pX1, float pX2, float pY1, float pY2, floa
         final int light = 0xF000F0;
         float opacity = Math.min(this.renderInfo().opacity, 1.0f);
         //? if ~1.21 {
-        consumer.addVertex(matrix4f, pX1, pY1, pBlitOffset).setColor(1.0f, 1.0f, 1.0f, opacity).setUv(pMinU, pMinV).setLight(light);
-        consumer.addVertex(matrix4f, pX1, pY2, pBlitOffset).setColor(1.0f, 1.0f, 1.0f, opacity).setUv(pMinU, pMaxV).setLight(light);
-        consumer.addVertex(matrix4f, pX2, pY2, pBlitOffset).setColor(1.0f, 1.0f, 1.0f, opacity).setUv(pMaxU, pMaxV).setLight(light);
-        consumer.addVertex(matrix4f, pX2, pY1, pBlitOffset).setColor(1.0f, 1.0f, 1.0f, opacity).setUv(pMaxU, pMinV).setLight(light);
+        consumer.addVertex(matrix4f, pX1, pY1, pBlitOffset).setUv(pMinU, pMinV).setColor(1.0f, 1.0f, 1.0f, opacity);
+        consumer.addVertex(matrix4f, pX1, pY2, pBlitOffset).setUv(pMinU, pMaxV).setColor(1.0f, 1.0f, 1.0f, opacity);
+        consumer.addVertex(matrix4f, pX2, pY2, pBlitOffset).setUv(pMaxU, pMaxV).setColor(1.0f, 1.0f, 1.0f, opacity);
+        consumer.addVertex(matrix4f, pX2, pY1, pBlitOffset).setUv(pMaxU, pMinV).setColor(1.0f, 1.0f, 1.0f, opacity);
         //?} else {
-        /*consumer.vertex(0, 0, 0).color(1.0f, 1.0f, 1.0f, opacity).uv(pMinU, pMinV).uv2(light).endVertex();
-        consumer.vertex(0, 0, 0).color(1.0f, 1.0f, 1.0f, opacity).uv(pMinU, pMaxV).uv2(light).endVertex();
-        consumer.vertex(0, 0, 0).color(1.0f, 1.0f, 1.0f, opacity).uv(pMaxU, pMaxV).uv2(light).endVertex();
-        consumer.vertex(0, 0, 0).color(1.0f, 1.0f, 1.0f, opacity).uv(pMaxU, pMinV).uv2(light).endVertex();
+        /*consumer.vertex(0, 0, 0).uv(pMinU, pMinV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
+        consumer.vertex(0, 0, 0).uv(pMinU, pMaxV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
+        consumer.vertex(0, 0, 0).uv(pMaxU, pMaxV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
+        consumer.vertex(0, 0, 0).uv(pMaxU, pMinV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
         *///?}
 
     }
