@@ -52,10 +52,10 @@ public record TextureBufferInfo(float pX1, float pX2, float pY1, float pY2, floa
         consumer.addVertex(matrix4f, pX2, pY2, pBlitOffset).setUv(pMaxU, pMaxV).setColor(1.0f, 1.0f, 1.0f, opacity);
         consumer.addVertex(matrix4f, pX2, pY1, pBlitOffset).setUv(pMaxU, pMinV).setColor(1.0f, 1.0f, 1.0f, opacity);
         //?} else {
-        /*consumer.vertex(0, 0, 0).uv(pMinU, pMinV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
-        consumer.vertex(0, 0, 0).uv(pMinU, pMaxV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
-        consumer.vertex(0, 0, 0).uv(pMaxU, pMaxV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
-        consumer.vertex(0, 0, 0).uv(pMaxU, pMinV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
+        /*consumer.vertex(matrix4f, pX1, pY1, pBlitOffset).uv(pMinU, pMinV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
+        consumer.vertex(matrix4f, pX1, pY2, pBlitOffset).uv(pMinU, pMaxV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
+        consumer.vertex(matrix4f, pX2, pY2, pBlitOffset).uv(pMaxU, pMaxV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
+        consumer.vertex(matrix4f, pX2, pY1, pBlitOffset).uv(pMaxU, pMinV).color(1.0f, 1.0f, 1.0f, opacity).endVertex();
         *///?}
 
     }
