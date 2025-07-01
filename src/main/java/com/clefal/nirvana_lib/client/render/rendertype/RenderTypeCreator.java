@@ -31,6 +31,19 @@ public class RenderTypeCreator extends RenderType {
                     .setTextureState(new TextureStateShard(resourceLocation, false, false))
                     //?}
 
+                    .createCompositeState(false)));
+
+    public static final Function<ResourceLocation, RenderType> guiBlend = Util.memoize(resourceLocation -> createRenderType("nl_normal_gui", DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS, 1024, false, true,
+            CompositeState.builder()
+                    //? if (>1.21.1) {
+
+                    /*.setShaderState(RenderStateShard.POSITION_TEXTURE_COLOR_SHADER)
+                    .setTextureState(new TextureStateShard(resourceLocation, TriState.FALSE, false))
+                 *///?} else {
+                    .setShaderState(new ShaderStateShard(GameRenderer::getPositionTexColorShader))
+                    .setTextureState(new TextureStateShard(resourceLocation, false, false))
+                    //?}
+
                     .setTransparencyState(new TransparencyStateShard("normal_blend", RenderSystem::enableBlend, RenderSystem::disableBlend))
                     .setDepthTestState(new DepthTestStateShard("nl_normal_gui_depth", GL11.GL_LEQUAL))
                     .createCompositeState(false)));
