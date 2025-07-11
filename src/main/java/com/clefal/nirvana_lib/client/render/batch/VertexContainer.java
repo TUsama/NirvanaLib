@@ -5,10 +5,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Divisor;
 import it.unimi.dsi.fastutil.ints.IntIterator;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.*;
 import org.joml.Matrix4f;
@@ -19,14 +17,12 @@ import net.minecraft.util.FastColor;
 
 //?}
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 public class VertexContainer {
 
-    public HashMultimap<ResourceLocation, TextureBufferInfo> map = HashMultimap.create(10, 100);
+    public HashMultimap<ResourceLocation, ITextureBufferInfo> map = HashMultimap.create(10, 100);
     public List<IFillBufferInfo> fillBufferInfos = new ArrayList<>();
     public List<DrawStringBufferInfo> strings = new ArrayList<>();
 
@@ -39,6 +35,10 @@ public class VertexContainer {
     }
 
     public void putBliz(ResourceLocation resourceLocation, TextureBufferInfo bufferInfo){
+        putBliz(resourceLocation, ((ITextureBufferInfo) bufferInfo));
+    }
+
+    public void putBliz(ResourceLocation resourceLocation, ITextureBufferInfo bufferInfo){
         map.put(resourceLocation, bufferInfo);
     }
 
@@ -120,12 +120,13 @@ public class VertexContainer {
 
     public void draw(MultiBufferSource bufferSource, Function<ResourceLocation, RenderType> renderTypeFunction){
         RenderSystem.enableDepthTest();
-        for (Map.Entry<ResourceLocation, Collection<TextureBufferInfo>> entry : this.map.asMap().entrySet()) {
+
+        for (var entry : this.map.asMap().entrySet()) {
             ResourceLocation key = entry.getKey();
             RenderType statusRenderType = renderTypeFunction.apply(key);
             VertexConsumer buffer = bufferSource.getBuffer(statusRenderType);
 
-            for (TextureBufferInfo bufferInfo : entry.getValue()) {
+            for (var bufferInfo : entry.getValue()) {
                 bufferInfo.upload(buffer);
             }
 

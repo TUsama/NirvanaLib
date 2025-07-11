@@ -3,7 +3,7 @@ package com.clefal.nirvana_lib.client.render.batch;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import org.joml.Matrix4f;
 
-public record TextureBufferInfo(float pX1, float pX2, float pY1, float pY2, float pBlitOffset, float pMinU, float pMaxU, float pMinV, float pMaxV, Matrix4f matrix4f, RenderInfo renderInfo) implements IBufferInfo{
+public record TextureBufferInfo(float pX1, float pX2, float pY1, float pY2, float pBlitOffset, float pMinU, float pMaxU, float pMinV, float pMaxV, Matrix4f matrix4f, RenderInfo renderInfo) implements ITextureBufferInfo{
 
     public static TextureBufferInfo of(float pX, float pY, float pBlitOffset, int pUOffset, int pVOffset, int pUWidth, int pVHeight, Matrix4f matrix4f) {
         return of(pX, pY, pBlitOffset, (float) pUOffset, (float) pVOffset, pUWidth, pVHeight, 256, 256, matrix4f);
