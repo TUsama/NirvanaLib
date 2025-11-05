@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public abstract class NLLanguageProvider extends LanguageProvider {
+public abstract class ConvenientLanguageProvider extends LanguageProvider {
 
     private static class AccessibleLanguageProvider extends LanguageProvider {
 
@@ -29,9 +29,9 @@ public abstract class NLLanguageProvider extends LanguageProvider {
     }
     private final AccessibleLanguageProvider upsideDown;
 
-    public NLLanguageProvider(PackOutput output, String modid, String locale) {
+    public ConvenientLanguageProvider(PackOutput output, String modid, String locale) {
         super(output, modid, locale);
-        this.upsideDown = new AccessibleLanguageProvider(output, modid, "en_ud");
+        this.upsideDown = new AccessibleLanguageProvider(output, modid, locale + "_ud");
     }
 
     public abstract List<ILangEntry> getAllEntry();
