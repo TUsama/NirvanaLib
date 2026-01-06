@@ -1,8 +1,11 @@
+//? <1.21.8 {
 package com.clefal.nirvana_lib.client.render.batch;
 
 import com.google.common.collect.HashMultimap;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Divisor;
 import it.unimi.dsi.fastutil.ints.IntIterator;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,6 +22,8 @@ import net.minecraft.util.FastColor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+
+import static net.minecraft.client.renderer.RenderStateShard.*;
 
 public class VertexContainer {
 
@@ -169,3 +174,4 @@ public class VertexContainer {
     }
 
 }
+//?}

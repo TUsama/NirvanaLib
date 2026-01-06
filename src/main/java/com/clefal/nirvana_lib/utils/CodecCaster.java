@@ -20,7 +20,11 @@ public class CodecCaster {
         }, new StreamDecoder<FriendlyByteBuf, T>() {
             @Override
             public T decode(FriendlyByteBuf buf) {
+                //? <1.21.8 {
                 return buf.readJsonWithCodec(codec);
+                //?} else {
+                /*return buf.readLenientJsonWithCodec(codec);
+                *///?}
             }
         });
     }

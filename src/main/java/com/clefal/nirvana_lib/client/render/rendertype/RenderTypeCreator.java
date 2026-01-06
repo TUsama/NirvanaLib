@@ -1,3 +1,4 @@
+//? <1.21.8 {
 package com.clefal.nirvana_lib.client.render.rendertype;
 
 import com.clefal.nirvana_lib.mixin.AccessorRenderType;
@@ -57,3 +58,4 @@ public class RenderTypeCreator extends RenderType {
     }
 
 }
+//?}
