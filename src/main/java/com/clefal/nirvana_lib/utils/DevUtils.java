@@ -6,11 +6,11 @@ import lombok.experimental.UtilityClass;
 //? if forge {
 /*import net.minecraftforge.fml.loading.FMLLoader;
 *///?} else if (fabric) {
-import net.fabricmc.loader.api.FabricLoader;
-//?} else if (neoforge) {
-/*import net.neoforged.fml.loading.FMLEnvironment;
+/*import net.fabricmc.loader.api.FabricLoader;
+*///?} else if (neoforge) {
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLLoader;
-*///?}
+//?}
 
 
 @UtilityClass
@@ -20,10 +20,10 @@ public class DevUtils {
         //? if forge {
         /*return !FMLLoader.isProduction();
         *///?} else if (fabric) {
-        return FabricLoader.getInstance().isDevelopmentEnvironment();
-        //?} else if (neoforge && <= 1.21.8) {
-        /*return !FMLLoader.isProduction();
-        *///?} else if (neoforge && > 1.21.8) {
+        /*return FabricLoader.getInstance().isDevelopmentEnvironment();
+        *///?} else if (neoforge && <= 1.21.8) {
+        return !FMLLoader.isProduction();
+        //?} else if (neoforge && > 1.21.8) {
         /*return !FMLEnvironment.isProduction();
         *///?}
     }
