@@ -12,7 +12,7 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
 }
 
 
-val modv = "2.1.0"
+val modv = "2.1.1"
 val mid = "nirvana_lib"
 
 val loader = when {
