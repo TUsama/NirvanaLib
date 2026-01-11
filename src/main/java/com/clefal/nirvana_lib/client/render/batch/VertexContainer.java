@@ -157,7 +157,7 @@ public class VertexContainer {
             /*color = ARGB.color(0, 0, 0, 0);
         *///?}
 
-        //? if ~1.21 {
+        //? if >1.20.1 {
         
         end.addVertex(0, 0, 0).setColor(color);
         end.addVertex(0, 0, 0).setColor(color);

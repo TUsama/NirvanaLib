@@ -1,7 +1,7 @@
 package com.clefal.nirvana_lib.mixin;
 
 //? >=1.21.8
-/*import com.mojang.blaze3d.pipeline.RenderPipeline;*/
+//import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderType;
 import org.spongepowered.asm.mixin.Mixin;

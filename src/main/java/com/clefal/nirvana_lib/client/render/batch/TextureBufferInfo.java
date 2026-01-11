@@ -46,7 +46,7 @@ public record TextureBufferInfo(float pX1, float pX2, float pY1, float pY2, floa
     public void upload(VertexConsumer consumer) {
         final int light = 0xF000F0;
         float opacity = Math.min(this.renderInfo().opacity, 1.0f);
-        //? if ~1.21 {
+        //? if >1.20.1 {
         consumer.addVertex(matrix4f, pX1, pY1, pBlitOffset).setUv(pMinU, pMinV).setColor(1.0f, 1.0f, 1.0f, opacity);
         consumer.addVertex(matrix4f, pX1, pY2, pBlitOffset).setUv(pMinU, pMaxV).setColor(1.0f, 1.0f, 1.0f, opacity);
         consumer.addVertex(matrix4f, pX2, pY2, pBlitOffset).setUv(pMaxU, pMaxV).setColor(1.0f, 1.0f, 1.0f, opacity);

@@ -1,3 +1,9 @@
+### 2.1.3
+rollback fzzy config dep version
+
+### 2.1.0
+upgrade to 1.21.8, 1.21.10
+
 ### 2.0.17
 add experiment lang entry and generator
 

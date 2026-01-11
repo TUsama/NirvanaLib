@@ -12,7 +12,7 @@ public class NirvanaLibConstants {
 
     public static ResourceLocation id(String path) {
         ResourceLocation location;
-        //? if =1.20.1 {
+        //? if legacy {
         
         /*location = new ResourceLocation(NirvanaLibConstants.MOD_ID, path);
          *///?} else {

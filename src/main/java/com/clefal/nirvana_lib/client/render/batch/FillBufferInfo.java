@@ -13,7 +13,7 @@ public record FillBufferInfo(float minX, float minY, float maxX, float maxY, flo
 
     @Override
     public void upload(VertexConsumer consumer) {
-        //? if ~1.21 {
+        //? if >1.20.1 {
         consumer.addVertex(matrix4f, minX, minY, z).setColor(packedColor);
         consumer.addVertex(matrix4f, minX, maxY, z).setColor(packedColor);
         consumer.addVertex(matrix4f, maxX, maxY, z).setColor(packedColor);

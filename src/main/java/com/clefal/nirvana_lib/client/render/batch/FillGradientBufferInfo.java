@@ -24,7 +24,7 @@ public record FillGradientBufferInfo(float minX, float minY, float maxX, float m
 
     @Override
     public void upload(VertexConsumer consumer) {
-        //? if ~1.21 {
+        //? if >1.20.1 {
         consumer.addVertex(matrix4f, minX, minY, z).setColor(rF, gF, bF, aF);
         consumer.addVertex(matrix4f, minX, maxY, z).setColor(rT, gT, bT, aT);
         consumer.addVertex(matrix4f, maxX, maxY, z).setColor(rT, gT, bT, aT);

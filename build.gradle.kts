@@ -1,18 +1,16 @@
-import deps.DependencyConfig
-import deps.Loaders
+
 
 plugins {
-    id("dev.isxander.modstitch.base") version "clefal-version"
-    id("dev.isxander.modstitch.shadow") version "clefal-version"
-    id("dev.isxander.modstitch.publishing") version "clefal-version"
+    id("dev.isxander.modstitch.base") version "0.8.4"
+    id("dev.isxander.modstitch.shadow") version "0.8.4"
+    id("dev.isxander.modstitch.publishing") version "0.8.4"
 }
 
 fun prop(name: String, consumer: (prop: String) -> Unit) {
     (findProperty(name) as? String?)?.let(consumer)
 }
 
-
-val modv = "2.1.1"
+val modv = "2.1.3"
 val mid = "nirvana_lib"
 
 val loader = when {
@@ -29,13 +27,7 @@ modstitch {
 
     // Alternatively use stonecutter.eval if you have a lot of versions to target.
     // https://stonecutter.kikugie.dev/stonecutter/guide/setup#checking-versions
-    javaTarget = when (minecraft) {
-        "1.20.1" -> 17
-        "1.21.1" -> 21
-        "1.21.4" -> 21
-        "1.21.8", "1.21.10", "1.21.11" -> 21
-        else -> throw IllegalArgumentException("Please store the java version for ${property("deps.minecraft")} in build.gradle.kts!")
-    }
+    javaVersion = if (modstitch.isModDevGradleLegacy) 17 else 21
 
     // If parchment doesnt exist for a version yet you can safely
     // omit the "deps.parchment" property from your versioned gradle.properties
@@ -58,10 +50,14 @@ modstitch {
         modDescription =
             "Library mod for Clefal"
         modLicense = "MIT"
-        fun <K, V> MapProperty<K, V>.populate(block: MapProperty<K, V>.() -> Unit) {
+
+        fun <K : Any, V : Any> MapProperty<K, V>.populate(
+            block: MapProperty<K, V>.() -> Unit
+        ) {
             block()
         }
-        replacementProperties.populate {
+
+        replacementProperties.populate<String, String> {
             // You can put any other replacement properties/metadata here that
             // modstitch doesn't initially support. Some examples below.
             put("mod_issue_tracker", "https://github.com/TUsama/Loot-Beams-Refork/issues")
@@ -121,19 +117,16 @@ modstitch {
 
     // ModDevGradle (NeoForge, Forge, Forgelike)
     moddevgradle {
-        enable {
-            prop("deps.forge") { forgeVersion = it }
-            prop("deps.neoform") { neoFormVersion = it }
-            prop("deps.neoforge") { neoForgeVersion = it }
-            prop("deps.mcp") { mcpVersion = it }
-        }
+        prop("deps.forge") { forgeVersion = it }
+        prop("deps.neoforge") { neoForgeVersion = it }
+        prop("deps.mcp") { mcpVersion = it }
 
         // Configures client and server runs for MDG, it is not done by default
         defaultRuns()
 
         // This block configures the `neoforge` extension that MDG exposes by default,
         // you can configure MDG like normal from here
-        configureNeoforge {
+        configureNeoForge {
             setAccessTransformers("../../src/main/resources/META-INF/accesstransformer.cfg")
             validateAccessTransformers = false
             runs.all {
@@ -170,15 +163,18 @@ base {
 
 // Stonecutter constants for mod loaders.
 // See https://stonecutter.kikugie.dev/stonecutter/guide/comments#condition-constants
-var constraint: String = name.split("-")[1]
 stonecutter {
-    consts(
-        "fabric" to constraint.equals("fabric"),
-        "neoforge" to constraint.equals("neoforge"),
-        "forge" to constraint.equals("forge"),
-        "vanilla" to constraint.equals("vanilla")
-    )
+    constants.putAll(mapOf<String, Boolean>(
+        "fabric" to loader.equals("fabric"),
+        "neoforge" to loader.equals("neoforge"),
+        "forge" to loader.equals("forge"),
+        "vanilla" to loader.equals("vanilla"),
+        "legacy" to (minecraft == "1.20.1")
+
+    ))
+
 }
+
 
 tasks.named<Copy>("processResources") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -189,12 +185,13 @@ configurations.named("modstitchShadow"){
     isCanBeConsumed = true
 }
 */
+
 msShadow {
     relocatePackage.set("${modstitch.metadata.modGroup.get()}.${modstitch.metadata.modId.get()}.relocated")
-    dependency("io.vavr:vavr:0.10.6", mapOf("io.vavr" to "io.vavr")){
+    dependency("io.vavr:vavr:0.11.0", mapOf("io.vavr" to "io.vavr")){
         exclude("META-INF/")
     }
-    dependency("net.neoforged:bus:8.0.2", mapOf("net.neoforged.bus" to "net.neoforged.bus")){
+    dependency("net.neoforged:bus:8.0.5", mapOf("net.neoforged.bus" to "net.neoforged.bus")){
         exclude("org.ow2.asm")
 
         exclude("net.jodah")
@@ -205,12 +202,6 @@ msShadow {
 }
 
 
-tasks.register<Copy>("buildAndCollect") {
-    dependsOn("build")
-    group = "build"
-    from(modstitch.finalJarTask.map { it.archiveFile }.get())
-    into(rootProject.layout.buildDirectory.file("libs/${modv}"))
-}
 
 
 // All dependencies should be specified through modstitch's proxy configuration.
@@ -218,14 +209,14 @@ tasks.register<Copy>("buildAndCollect") {
 // If you want to create proxy configurations for more source sets, such as client source sets,
 // use the modstitch.createProxyConfigurations(sourceSets["client"]) function.
 dependencies {
-
+/*
     val loader = when {
         modstitch.isLoom -> Loaders.LOOM
         modstitch.isModDevGradleLegacy -> Loaders.FORGE
         modstitch.isModDevGradleRegular -> Loaders.NEOFORGE
         else -> throw IllegalArgumentException("unknown loader")
     }
-
+*/
     val fzzyConfigVersion = findProperty("deps.fzzy_config_version")
     val fzzyMinecraftVersion = when (minecraft) {
         "1.21.1" -> "1.21"
@@ -264,11 +255,11 @@ dependencies {
 
     modstitchModCompileOnly(fzzyString)
     modstitchModRuntimeOnly(fzzyString)
-
+/*
     //loader-specified deps
     DependencyConfig.getDependencies(loader, minecraft).forEach { dep ->
         dependencies.add(dep.configuration, dep.notation, dep.options)
-    }
+    }*/
     //lombok
     modstitchCompileOnly("org.projectlombok:lombok:1.18.38")
     annotationProcessor("org.projectlombok:lombok:1.18.38")
@@ -277,15 +268,14 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
 
     //shadow dep
-    modstitchImplementation("io.vavr:vavr:0.10.6")
-    modstitchImplementation("net.neoforged:bus:8.0.2")
+    modstitchImplementation("io.vavr:vavr:0.11.0")
+    modstitchImplementation("net.neoforged:bus:8.0.5")
 
 
     // Anything else in the dependencies block will be used for all platforms.
 }
 
 msPublishing {
-    val finalFileTree = rootProject.layout.buildDirectory.files("libs/${modv}").asFileTree.files
 
     mpp {
         changelog = file("../../changelog.md")
@@ -300,10 +290,10 @@ msPublishing {
         type = STABLE
         //I think this is provided by modstich or stonecutter. So we can't add this otherwise the upload will fail.
         //modLoaders.add(loader)
-        val finalFile = finalFileTree.filter { it.name.contains(minecraft) && it.name.contains(loader) }
-        file.set(finalFile.firstOrNull())
-        displayName = file.map { it.asFile.name }
         //dryRun = true
+        val finalFile = modstitch.finalJarTask.map { it.archiveFile.get() }
+        file.set(finalFile)
+        displayName = file.map { it.asFile.name }
         val cfOptions = curseforgeOptions {
             accessToken = file("D:\\curseforge-key.txt").readText()
             projectId = "1164411"
