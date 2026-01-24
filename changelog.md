@@ -1,3 +1,9 @@
+### 2.1.5
+upgrade to 1.21.11, fix multiversion issues
+
+### 2.1.3
+re-implement batch render in 1.21.8 1.21.10
+
 ### 2.1.3
 rollback fzzy config dep version
 

@@ -1,3 +1,4 @@
+import deps.DependencyConfig
 
 
 plugins {
@@ -10,7 +11,7 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
     (findProperty(name) as? String?)?.let(consumer)
 }
 
-val modv = "2.1.3"
+val modv = "2.1.5"
 val mid = "nirvana_lib"
 
 val loader = when {
@@ -146,7 +147,10 @@ modstitch {
         // You do not need to specify mixins in any mods.json/toml file if this is set to
         // true, it will automatically be generated.
         addMixinsToModManifest = true
-        configs.register(mid)
+        when (minecraft) {
+            "1.21.10", "1.21.8", "1.21.11" -> configs.register("$mid.new_render")
+            else -> configs.register(mid)
+        }
 
 
         // Most of the time you wont ever need loader specific mixins.
@@ -169,9 +173,27 @@ stonecutter {
         "neoforge" to loader.equals("neoforge"),
         "forge" to loader.equals("forge"),
         "vanilla" to loader.equals("vanilla"),
-        "legacy" to (minecraft == "1.20.1")
+        "legacy" to (minecraft == "1.20.1"),
+        "new_pipeline" to ((minecraft == "1.21.10") || (minecraft == "1.21.8") || (minecraft == "1.21.11"))
 
     ))
+
+    /*swaps["identifier"] = when {
+        eval(current.version, "<1.21.11") -> "ResourceLocation"
+        else -> "Identifier"
+    }
+    swaps["identifier_import"] = when {
+        eval(current.version, "<1.21.11") -> "ResourceLocation"
+        else -> "Identifier"
+    }*/
+    replacements.string(current.parsed >= "1.21.11") {
+        replace("net.minecraft.resources.ResourceLocation", "net.minecraft.resources.Identifier")
+        replace("renderer.RenderType", "renderer.rendertype.RenderType")
+    }
+
+    replacements.regex(current.parsed >= "1.21.11") {
+        replace("\\bResourceLocation\\b" to "Identifier", "Identifier" to "ResourceLocation")
+    }
 
 }
 
@@ -217,6 +239,18 @@ dependencies {
         else -> throw IllegalArgumentException("unknown loader")
     }
 */
+
+    fun Dependency?.jij() = this?.also(::modstitchJiJ)
+    fun String.implementation() = if (modstitch.isModDevGradleLegacy){
+        add("modImplementation", this)
+    } else {
+        modstitchModImplementation(this)
+    }
+    fun String.runtimeOnly() = if (modstitch.isModDevGradleLegacy) {
+        add("modRuntimeOnly", this)
+    } else {
+        modstitchModRuntimeOnly(this)
+    }
     val fzzyConfigVersion = findProperty("deps.fzzy_config_version")
     val fzzyMinecraftVersion = when (minecraft) {
         "1.21.1" -> "1.21"
@@ -254,25 +288,23 @@ dependencies {
     }
 
     modstitchModCompileOnly(fzzyString)
-    modstitchModRuntimeOnly(fzzyString)
-/*
+    (fzzyString).runtimeOnly()
+
     //loader-specified deps
     DependencyConfig.getDependencies(loader, minecraft).forEach { dep ->
         dependencies.add(dep.configuration, dep.notation, dep.options)
-    }*/
+    }
     //lombok
-    modstitchCompileOnly("org.projectlombok:lombok:1.18.38")
-    annotationProcessor("org.projectlombok:lombok:1.18.38")
+    modstitchCompileOnly("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")
 
-    testCompileOnly("org.projectlombok:lombok:1.18.38")
-    testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
+    testCompileOnly("org.projectlombok:lombok:1.18.42")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.42")
 
     //shadow dep
     modstitchImplementation("io.vavr:vavr:0.11.0")
     modstitchImplementation("net.neoforged:bus:8.0.5")
 
-
-    // Anything else in the dependencies block will be used for all platforms.
 }
 
 msPublishing {
