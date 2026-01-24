@@ -1,6 +1,13 @@
 package com.clefal.nirvana_lib.client.render.batch;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+//? new_pipeline {
+/*import net.minecraft.client.gui.render.TextureSetup;
+import net.minecraft.client.renderer.RenderPipelines;
+*///?}
+import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 
 public record TextureBufferInfo(float pX1, float pX2, float pY1, float pY2, float pBlitOffset, float pMinU, float pMaxU, float pMinV, float pMaxV, Matrix4f matrix4f, RenderInfo renderInfo) implements ITextureBufferInfo{
@@ -59,6 +66,17 @@ public record TextureBufferInfo(float pX1, float pX2, float pY1, float pY2, floa
         *///?}
 
     }
+    //? new_pipeline {
+    /*public BufferInfoRenderState toRenderState(ResourceLocation location, GuiGraphics guiGraphics){
+        //? < 1.21.11 {
+        TextureSetup textureSetup = TextureSetup.singleTexture(Minecraft.getInstance().getTextureManager().getTexture(location).getTextureView());
+        //? } else
+        //TextureSetup textureSetup = TextureSetup.singleTexture(Minecraft.getInstance().getTextureManager().getTexture(location).getTextureView(), Minecraft.getInstance().getTextureManager().getTexture(location).getSampler());
+
+
+        return new BufferInfoRenderState(RenderPipelines.GUI_TEXTURED, textureSetup,guiGraphics.pose(), pX1, pY1, pX2, pY2, pMinU, pMaxU, pMinV, pMaxV, -1,  guiGraphics.peekScissorStack());
+    }
+    *///?}
 
     public record RenderInfo(float opacity) {
         public static RenderInfo ofOpacity(float opacity){

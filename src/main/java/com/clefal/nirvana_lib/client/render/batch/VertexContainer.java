@@ -1,13 +1,17 @@
-//? <1.21.8 {
 package com.clefal.nirvana_lib.client.render.batch;
 
+
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Divisor;
 import it.unimi.dsi.fastutil.ints.IntIterator;
+import net.minecraft.client.gui.GuiGraphics;
+//? new_pipeline {
+/*import com.clefal.nirvana_lib.mixin.GuiGraphicsAccessor;
+*///?}
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -21,18 +25,20 @@ import net.minecraft.util.FastColor;
 //?}
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.function.Function;
-
-import static net.minecraft.client.renderer.RenderStateShard.*;
 
 public class VertexContainer {
 
+    //? new_pipeline {
+    /*public Multimap<ResourceLocation, ITextureBufferInfo> map = Multimaps.newListMultimap(new TreeMap<>(), ArrayList::new);
+    *///? } else {
     public HashMultimap<ResourceLocation, ITextureBufferInfo> map = HashMultimap.create(10, 100);
+    //?}
     public List<IFillBufferInfo> fillBufferInfos = new ArrayList<>();
     public List<DrawStringBufferInfo> strings = new ArrayList<>();
 
     public VertexContainer(){
-
     }
 
     public VertexContainer(int expectedKeys, int expectedValuesPerKey){
@@ -122,21 +128,21 @@ public class VertexContainer {
         this.fillBufferInfos = new ArrayList<>();
         this.strings.clear();
     }
-
-    public void draw(MultiBufferSource bufferSource, Function<ResourceLocation, RenderType> renderTypeFunction){
+    //? !new_pipeline {
+    public void draw(MultiBufferSource guiGraphics, Function<ResourceLocation, RenderType> renderTypeFunction){
         RenderSystem.enableDepthTest();
 
         for (var entry : this.map.asMap().entrySet()) {
             ResourceLocation key = entry.getKey();
             RenderType statusRenderType = renderTypeFunction.apply(key);
-            VertexConsumer buffer = bufferSource.getBuffer(statusRenderType);
+            VertexConsumer buffer = guiGraphics.getBuffer(statusRenderType);
 
             for (var bufferInfo : entry.getValue()) {
                 bufferInfo.upload(buffer);
             }
 
         }
-        VertexConsumer buffer = bufferSource.getBuffer(RenderType.gui());
+        VertexConsumer buffer = guiGraphics.getBuffer(RenderType.gui());
         if (!fillBufferInfos.isEmpty()){
             for (IFillBufferInfo fillBufferInfo : fillBufferInfos) {
                 fillBufferInfo.upload(buffer);
@@ -144,11 +150,11 @@ public class VertexContainer {
         }
         if (!strings.isEmpty()){
             for (DrawStringBufferInfo string : strings) {
-                string.upload(bufferSource);
+                string.upload(guiGraphics);
             }
         }
 
-        VertexConsumer end = bufferSource.getBuffer(RenderType.gui());
+        VertexConsumer end = guiGraphics.getBuffer(RenderType.gui());
         int color;
 
         //? if <=1.21.1 {
@@ -172,6 +178,34 @@ public class VertexContainer {
         RenderSystem.disableDepthTest();
         refresh();
     }
+    //?} else {
+    /*public void draw(GuiGraphics guiGraphics){
+
+        for (var entry : this.map.asMap().entrySet()) {
+            ResourceLocation key = entry.getKey();
+
+            for (var bufferInfo : entry.getValue()) {
+                if (bufferInfo instanceof TextureBufferInfo textureBufferInfo){
+                    BufferInfoRenderState renderState = textureBufferInfo.toRenderState(key, guiGraphics);
+                    ((GuiGraphicsAccessor) guiGraphics).getGuiRenderState().submitGuiElement(renderState);
+                }
+            }
+
+        }
+        if (!fillBufferInfos.isEmpty()){
+            for (IFillBufferInfo fillBufferInfo : fillBufferInfos) {
+
+                ((GuiGraphicsAccessor) guiGraphics).getGuiRenderState().submitGuiElement(fillBufferInfo.toRenderState(guiGraphics));
+            }
+        }
+        if (!strings.isEmpty()){
+            for (DrawStringBufferInfo string : strings) {
+                ((GuiGraphicsAccessor) guiGraphics).getGuiRenderState().submitText(string.toRenderState(guiGraphics));
+            }
+        }
+
+        refresh();
+    }
+    *///?}
 
 }
-//?}

@@ -5,10 +5,10 @@ import net.minecraft.client.renderer.MultiBufferSource;
 
 public interface IBufferInfo {
 
-    default void upload(VertexConsumer consumer){
+    default void upload(VertexConsumer consumer) {
 
     }
-    default void upload(MultiBufferSource bufferSource){
+    default void upload(MultiBufferSource bufferSource) {
 
     }
 }

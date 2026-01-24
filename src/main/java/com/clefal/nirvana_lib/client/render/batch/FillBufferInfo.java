@@ -1,6 +1,12 @@
 package com.clefal.nirvana_lib.client.render.batch;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+//? new_pipeline {
+/*import net.minecraft.client.gui.render.TextureSetup;
+import net.minecraft.client.renderer.RenderPipelines;
+*///?}
 import org.joml.Matrix4f;
 
 public record FillBufferInfo(float minX, float minY, float maxX, float maxY, float z, int packedColor,
@@ -25,4 +31,9 @@ public record FillBufferInfo(float minX, float minY, float maxX, float maxY, flo
         consumer.vertex(matrix4f, maxX, minY, z).color(packedColor).endVertex();
         *///?}
     }
+    //? new_pipeline {
+    /*public FillBufferInfoRenderState toRenderState(GuiGraphics guiGraphics){
+        return new FillBufferInfoRenderState(RenderPipelines.GUI_TEXTURED, TextureSetup.noTexture(),guiGraphics.pose(), minX, minY, maxX, maxY, packedColor, packedColor, guiGraphics.peekScissorStack());
+    }
+    *///?}
 }
