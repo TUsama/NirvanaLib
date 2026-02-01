@@ -74,7 +74,7 @@ public record TextureBufferInfo(float pX1, float pX2, float pY1, float pY2, floa
         //TextureSetup textureSetup = TextureSetup.singleTexture(Minecraft.getInstance().getTextureManager().getTexture(location).getTextureView(), Minecraft.getInstance().getTextureManager().getTexture(location).getSampler());
 
 
-        return new BufferInfoRenderState(RenderPipelines.GUI_TEXTURED, textureSetup,guiGraphics.pose(), pX1, pY1, pX2, pY2, pMinU, pMaxU, pMinV, pMaxV, -1,  guiGraphics.peekScissorStack());
+        return new BufferInfoRenderState(RenderPipelines.GUI_TEXTURED, textureSetup,guiGraphics.pose(), pX1, pY1, pX2, pY2, pMinU, pMaxU, pMinV, pMaxV, -1, guiGraphics.peekScissorStack());
     }
     *///?}
 

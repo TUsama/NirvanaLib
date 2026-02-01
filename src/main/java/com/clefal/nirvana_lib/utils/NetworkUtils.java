@@ -21,6 +21,7 @@ import net.minecraft.network.FriendlyByteBuf;
 
 import net.minecraft.resources.ResourceLocation;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
 
@@ -38,6 +39,10 @@ public class NetworkUtils {
 
     public <T> void sendToServer(T msg) {
         Dispatcher.sendToServer(msg);
+    }
+
+    public <T> void sendToAllClients(T msg, MinecraftServer level){
+        sendToClients(msg, level.getPlayerList().getPlayers());
     }
 
     public <MSG extends ModPacket<MSG>> void registerPacket(Supplier<MSG> supplier) {
