@@ -11,7 +11,7 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
     (findProperty(name) as? String?)?.let(consumer)
 }
 
-val modv = "2.1.5"
+val modv = "2.1.6"
 val mid = "nirvana_lib"
 
 val loader = when {
@@ -178,14 +178,19 @@ stonecutter {
 
     ))
 
-    /*swaps["identifier"] = when {
-        eval(current.version, "<1.21.11") -> "ResourceLocation"
-        else -> "Identifier"
+    /*swaps["peek_diff"] = when {
+        eval(current.version, "=1.21.10") && loader.equals("fabric") -> "guiGraphics.scissorStack.peek()"
+        else -> "guiGraphics.peekScissorStack()"
     }
     swaps["identifier_import"] = when {
         eval(current.version, "<1.21.11") -> "ResourceLocation"
         else -> "Identifier"
     }*/
+
+    replacements.string(current.version >= "1.21.10" && loader.equals("fabric")) {
+        replace("guiGraphics.peekScissorStack()", "guiGraphics.scissorStack.peek()")
+    }
+
     replacements.string(current.parsed >= "1.21.11") {
         replace("net.minecraft.resources.ResourceLocation", "net.minecraft.resources.Identifier")
         replace("renderer.RenderType", "renderer.rendertype.RenderType")
@@ -194,6 +199,7 @@ stonecutter {
     replacements.regex(current.parsed >= "1.21.11") {
         replace("\\bResourceLocation\\b" to "Identifier", "Identifier" to "ResourceLocation")
     }
+
 
 }
 
@@ -261,9 +267,7 @@ dependencies {
     }
     var fzzyString : String = "";
 
-    modstitchModImplementation("maven.modrinth:common-network:${property("deps.common_network")}"){
-        isTransitive = false
-    }
+    modstitchModImplementation("maven.modrinth:common-network:${property("deps.common_network")}")
 
     //fzzy
     modstitch.loom {
@@ -305,6 +309,7 @@ dependencies {
     modstitchImplementation("io.vavr:vavr:0.11.0")
     modstitchImplementation("net.neoforged:bus:8.0.5")
 
+    modstitchImplementation("com.google.code.findbugs:jsr305:3.0.2")
 }
 
 msPublishing {
