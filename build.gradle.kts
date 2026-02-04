@@ -11,7 +11,7 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
     (findProperty(name) as? String?)?.let(consumer)
 }
 
-val modv = "2.1.6"
+val modv = "2.1.7"
 val mid = "nirvana_lib"
 
 val loader = when {
@@ -28,7 +28,13 @@ modstitch {
 
     // Alternatively use stonecutter.eval if you have a lot of versions to target.
     // https://stonecutter.kikugie.dev/stonecutter/guide/setup#checking-versions
-    javaVersion = if (modstitch.isModDevGradleLegacy) 17 else 21
+    javaVersion = when (minecraft) {
+        "1.20.1" -> 17
+        "1.21.1" -> 21
+        "1.21.4" -> 21
+        "1.21.8", "1.21.10", "1.21.11" -> 21
+        else -> throw IllegalArgumentException("Please store the java version for ${property("deps.minecraft")} in build.gradle.kts!")
+    }
 
     // If parchment doesnt exist for a version yet you can safely
     // omit the "deps.parchment" property from your versioned gradle.properties
