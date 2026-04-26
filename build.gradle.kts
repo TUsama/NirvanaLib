@@ -11,7 +11,7 @@ fun prop(name: String, consumer: (prop: String) -> Unit) {
     (findProperty(name) as? String?)?.let(consumer)
 }
 
-val modv = "2.1.7"
+val modv = "2.2.0"
 val mid = "nirvana_lib"
 
 val loader = when {

@@ -1,3 +1,9 @@
+### 2.2.0
+upgrade to 26.1.2
+upgrade stonecutter to 0.9.2
+remove directly reference from Common Network in ModPacket
+
+
 ### 2.1.7
 fix crash on java 17(1.20.1)
 
