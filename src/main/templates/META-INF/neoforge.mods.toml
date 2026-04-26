@@ -28,5 +28,5 @@ license = "${mod_license}"
     type = "required"
 [[dependencies.${mod_id}]]
     modId = "commonnetworking"
-    versionRange = "${common_networking_version}"
+    versionRange = "${common_networking}"
     mandatory = true

@@ -1,14 +1,13 @@
 package com.clefal.nirvana_lib.network.newtoolchain;
 
-import commonnetwork.networking.data.PacketContext;
-import commonnetwork.networking.data.Side;
+import net.minecraft.server.level.ServerPlayer;
 
-public interface S2CModPacket<MSG extends S2CModPacket<MSG>> extends ModPacket<MSG>{
+public interface S2CModPacket<MSG extends S2CModPacket<MSG>> extends ModPacket<MSG> {
 
     void handleClient();
 
     @Override
-    default void handle(PacketContext<MSG> ctx) {
-        if (ctx.side() == Side.CLIENT) ctx.message().handleClient();
+    default void handle(ServerPlayer sender, MSG message, Side side) {
+        if (side == Side.CLIENT) message.handleClient();
     }
 }

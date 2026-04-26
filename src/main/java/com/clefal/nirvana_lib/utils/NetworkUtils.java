@@ -4,6 +4,7 @@ package com.clefal.nirvana_lib.utils;
 import com.clefal.nirvana_lib.NirvanaLibConstants;
 
 import com.clefal.nirvana_lib.network.newtoolchain.ModPacket;
+import com.clefal.nirvana_lib.network.newtoolchain.Side;
 import commonnetwork.api.Dispatcher;
 import commonnetwork.api.Network;
 import lombok.experimental.UtilityClass;
@@ -56,13 +57,13 @@ public class NetworkUtils {
             msg.read(buf);
             return msg;
         });
-        Network.registerPacket(supplier.get().type(), selfClass, codec, x -> x.message().handle(x));
+        Network.registerPacket(supplier.get().type(), selfClass, codec, x -> x.message().handle(x.sender(), x.message(), Side.fromCM(x.side())));
         //?} else {
         /*Network.registerPacket(classToResourceLocation(selfClass), selfClass, (ModPacket::write), buf -> {
             MSG msg = supplier.get();
             msg.read(buf);
             return msg;
-        }, x -> x.message().handle(x));
+        }, x -> x.message().handle(x.sender(), x.message(), Side.fromCM(x.side())));
         
         *///?}
     }

@@ -12,7 +12,7 @@ allprojects {
         maven("https://maven.fabricmc.net/")
         maven("https://repo.spongepowered.org/repository/maven-public/")
         maven("https://maven.blamejared.com")
-
+        maven ("https://jm.gserv.me/repository/maven-public/")
 
         maven("https://cursemaven.com")
         maven("https://oss.sonatype.org/content/repositories/snapshots")

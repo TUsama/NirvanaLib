@@ -33,6 +33,7 @@ modstitch {
         "1.21.1" -> 21
         "1.21.4" -> 21
         "1.21.8", "1.21.10", "1.21.11" -> 21
+        "26.1.2" -> 25
         else -> throw IllegalArgumentException("Please store the java version for ${property("deps.minecraft")} in build.gradle.kts!")
     }
 
@@ -76,6 +77,7 @@ modstitch {
                     "1.21.8" -> 64
                     "1.21.10" -> 69
                     "1.21.11" -> 70.0
+                    "26.1.2" -> 84.0
                     else -> throw IllegalArgumentException("Please store the resource pack version for ${property("deps.minecraft")} in build.gradle.kts! https://minecraft.wiki/w/Pack_format")
                 }.toString()
             )
@@ -100,7 +102,7 @@ modstitch {
 
 
             put("fzzy_config_version", property("deps.fzzy_config_version") as String)
-            put("common_networking_version", property("deps.common_networking_ingame_version") as String)
+            put("common_networking", property("deps.common_networking") as String)
         }
     }
 
@@ -154,7 +156,7 @@ modstitch {
         // true, it will automatically be generated.
         addMixinsToModManifest = true
         when (minecraft) {
-            "1.21.10", "1.21.8", "1.21.11" -> configs.register("$mid.new_render")
+            "1.21.10", "1.21.8", "1.21.11", "26.1.2" -> configs.register("$mid.new_render")
             else -> configs.register(mid)
         }
 
@@ -180,7 +182,7 @@ stonecutter {
         "forge" to loader.equals("forge"),
         "vanilla" to loader.equals("vanilla"),
         "legacy" to (minecraft == "1.20.1"),
-        "new_pipeline" to ((minecraft == "1.21.10") || (minecraft == "1.21.8") || (minecraft == "1.21.11"))
+        "new_pipeline" to ((minecraft == "1.21.10") || (minecraft == "1.21.8") || (minecraft == "1.21.11") || (minecraft == "26.1.2"))
 
     ))
 
@@ -200,6 +202,14 @@ stonecutter {
     replacements.string(current.parsed >= "1.21.11") {
         replace("net.minecraft.resources.ResourceLocation", "net.minecraft.resources.Identifier")
         replace("renderer.RenderType", "renderer.rendertype.RenderType")
+    }
+
+    replacements.string(current.parsed.eq("26.1.2")) {
+        replace("net.minecraft.client.gui.GuiGraphics", "net.minecraft.client.gui.GuiGraphicsExtractor")
+        replace("GuiGraphics.class", "GuiGraphicsExtractor.class")
+        replace("(GuiGraphics guiGraphics)", "(GuiGraphicsExtractor guiGraphics)")
+        replace(", GuiGraphics guiGraphics", ", GuiGraphicsExtractor guiGraphics")
+        replace("net.minecraft.client.gui.render.state", "net.minecraft.client.renderer.state.gui")
     }
 
     replacements.regex(current.parsed >= "1.21.11") {
@@ -269,11 +279,13 @@ dependencies {
         "1.21.4" -> "1.21.3"
         "1.21.8" -> "1.21.6"
         "1.21.10" -> "1.21.9"
+        "26.1.2" -> "26.1"
         else -> minecraft
     }
     var fzzyString : String = "";
 
-    modstitchModImplementation("maven.modrinth:common-network:${property("deps.common_network")}")
+    "mysticdrew:common-networking-$loader:${property("deps.common_networking") as String}".runtimeOnly()
+    modstitchModCompileOnly ("mysticdrew:common-networking-$loader:${property("deps.common_networking") as String}")
 
     //fzzy
     modstitch.loom {

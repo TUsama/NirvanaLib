@@ -1,6 +1,7 @@
 package com.clefal.nirvana_lib.client.render.batch;
 
 
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -187,6 +188,7 @@ public class VertexContainer {
             for (var bufferInfo : entry.getValue()) {
                 if (bufferInfo instanceof TextureBufferInfo textureBufferInfo){
                     BufferInfoRenderState renderState = textureBufferInfo.toRenderState(key, guiGraphics);
+                    //~ if > 1.21.11 'submitGuiElement' -> 'addGuiElement'
                     ((GuiGraphicsAccessor) guiGraphics).getGuiRenderState().submitGuiElement(renderState);
                 }
             }
@@ -194,12 +196,13 @@ public class VertexContainer {
         }
         if (!fillBufferInfos.isEmpty()){
             for (IFillBufferInfo fillBufferInfo : fillBufferInfos) {
-
+                //~ if > 1.21.11 'submitGuiElement' -> 'addGuiElement'
                 ((GuiGraphicsAccessor) guiGraphics).getGuiRenderState().submitGuiElement(fillBufferInfo.toRenderState(guiGraphics));
             }
         }
         if (!strings.isEmpty()){
             for (DrawStringBufferInfo string : strings) {
+                //~ if > 1.21.11 'submitText' -> 'addText'
                 ((GuiGraphicsAccessor) guiGraphics).getGuiRenderState().submitText(string.toRenderState(guiGraphics));
             }
         }

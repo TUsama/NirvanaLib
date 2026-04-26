@@ -9,8 +9,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 *///?}
 import org.joml.Matrix4f;
 
-public record FillBufferInfo(float minX, float minY, float maxX, float maxY, float z, int packedColor,
-                             Matrix4f matrix4f) implements IFillBufferInfo {
+public record FillBufferInfo(float minX, float minY, float maxX, float maxY, float z, int packedColor, Matrix4f matrix4f) implements IFillBufferInfo {
 
 
     public static FillBufferInfo fillOf(float minX, float minY, float maxX, float maxY, float z, int color, Matrix4f matrix4f) {
